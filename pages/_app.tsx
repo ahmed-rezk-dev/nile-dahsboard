@@ -1,5 +1,6 @@
 import {AppProps} from 'next/dist/next-server/lib/router/router';
 import {createGlobalStyle, ThemeProvider} from 'styled-components';
+import 'antd/dist/antd.css';
 
 const GlobalStyle = createGlobalStyle`
   body {

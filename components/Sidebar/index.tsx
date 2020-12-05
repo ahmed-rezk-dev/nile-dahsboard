@@ -25,6 +25,8 @@ import {
 } from '@/components/Styled/Sidebar';
 import { CollapseType } from 'antd/lib/layout/Sider';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { BaseRouter } from 'next/dist/next-server/lib/router/router';
 
 type Props = {
     // toggle: CollapseType;
@@ -32,6 +34,8 @@ type Props = {
 };
 
 const Sidebar = ({ collapsed }: Props) => {
+    const currentRouter: BaseRouter = useRouter();
+    console.log('currentRouter:', currentRouter);
     return (
         <SiderContainer collapsible collapsed={collapsed} /*onCollapse={toggle}*/ trigger={null}>
             <Spring
@@ -105,13 +109,13 @@ const Sidebar = ({ collapsed }: Props) => {
                             }}
                         >
                             <SiderMenu
-                                // defaultSelectedKeys={[currentPath]}
-                                // defaultOpenKeys={[currentRoute.group ? currentRoute.group.name : null]}
+                                defaultSelectedKeys={[currentRouter.pathname]}
+                                defaultOpenKeys={[currentRouter.pathname !== '/' ? currentRouter.pathname : '']}
                                 mode="inline"
                             >
                                 {/* Home */}
-                                <MenuItem key="home">
-                                    <Link href="/">
+                                <MenuItem key="/">
+                                    <Link href="/" activeClassName="active">
                                         <a>
                                             <HiHome />
                                             Home
@@ -121,7 +125,7 @@ const Sidebar = ({ collapsed }: Props) => {
 
                                 {/* Users */}
                                 <SubMenuContainer
-                                    key="users"
+                                    key="/users"
                                     title={
                                         <SubMenuTitle>
                                             <HiUsers />
@@ -129,12 +133,13 @@ const Sidebar = ({ collapsed }: Props) => {
                                         </SubMenuTitle>
                                     }
                                 >
-                                    <SubMenuItem key="index">
-                                        <Link href="/index">
+                                    <SubMenuItem key="/users">
+                                        <Link href="/users">
                                             <a>Index</a>
                                         </Link>
                                     </SubMenuItem>
-                                    <SubMenuItem key="workers">
+
+                                    <SubMenuItem key="/workers">
                                         <Link href="/workers">
                                             <a>Workers</a>
                                         </Link>
@@ -142,7 +147,7 @@ const Sidebar = ({ collapsed }: Props) => {
                                 </SubMenuContainer>
 
                                 {/* Profile */}
-                                <MenuItem key="profile">
+                                <MenuItem key="/profile">
                                     <Link href="/profile">
                                         <a>
                                             <AiFillProfile />
@@ -152,7 +157,7 @@ const Sidebar = ({ collapsed }: Props) => {
                                 </MenuItem>
 
                                 {/* Notifications */}
-                                <MenuItem key="notifications">
+                                <MenuItem key="/notifications">
                                     <Link href="/notifications">
                                         <a>
                                             <AiFillBell />
@@ -162,7 +167,7 @@ const Sidebar = ({ collapsed }: Props) => {
                                 </MenuItem>
 
                                 {/* Messages */}
-                                <MenuItem key="messages">
+                                <MenuItem key="/messages">
                                     <Link href="/messages">
                                         <a>
                                             <FaEnvelope />
@@ -172,7 +177,7 @@ const Sidebar = ({ collapsed }: Props) => {
                                 </MenuItem>
 
                                 {/* Settings */}
-                                <MenuItem key="settings">
+                                <MenuItem key="/settings">
                                     <Link href="/settings">
                                         <a>
                                             <AiFillSetting />
@@ -182,7 +187,7 @@ const Sidebar = ({ collapsed }: Props) => {
                                 </MenuItem>
 
                                 {/* Help */}
-                                <MenuItem key="help">
+                                <MenuItem key="/help">
                                     <Link href="/help">
                                         <a>
                                             <AiFillQuestionCircle />
@@ -191,7 +196,7 @@ const Sidebar = ({ collapsed }: Props) => {
                                     </Link>
                                 </MenuItem>
 
-                                <MenuItem key="error">
+                                <MenuItem key="/error">
                                     <Link href="/error">
                                         <a>
                                             <AiFillWarning />

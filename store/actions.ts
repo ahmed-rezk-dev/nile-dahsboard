@@ -37,7 +37,15 @@ export type ShoppingCartActions = ActionMap<ShoppingCartPayload>[keyof ActionMap
 type SidebarPayload = {
     [Constants.MenuToggle]: SidebarType;
 };
-export type MenuToggleAction = ActionMap<SidebarPayload>[keyof ActionMap<SidebarPayload>];
+
+export type MenuToggleActionType = ActionMap<SidebarPayload>[keyof ActionMap<SidebarPayload>];
+
+export const MenuToggleAction = (payload: SidebarType): MenuToggleActionType => {
+    return {
+        type: Constants.MenuToggle,
+        payload,
+    };
+};
 
 // Action types
-export type ActionsType = ProductActions | ShoppingCartActions | MenuToggleAction;
+export type ActionsType = ProductActions | ShoppingCartActions | MenuToggleActionType;

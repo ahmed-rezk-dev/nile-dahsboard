@@ -19,7 +19,8 @@
         "target": "esnext",
         "baseUrl": ".",
         "paths": {
-            "@/components/*": ["components/*"]
+            "@/components/*": ["components/*"],
+            "@actions/@": ["store/actions/@"]
         }
     },
     "exclude": ["node_modules", "**/*.spec.ts", "**/*.spec.tsx", "**/*.test.ts", "**/*.test.tsx"],

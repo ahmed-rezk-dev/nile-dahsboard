@@ -4,7 +4,7 @@
  *
  */
 
-import React from 'react';
+import React, { useContext } from 'react';
 import { Spring } from 'react-spring/renderprops.cjs';
 import { HiHome, HiUsers } from 'react-icons/hi';
 import { AiFillProfile, AiFillBell, AiFillSetting, AiFillQuestionCircle, AiFillWarning } from 'react-icons/ai';
@@ -23,10 +23,11 @@ import {
     SubMenuTitle,
     SubMenuItem,
 } from '@/components/Styled/Sidebar';
-import { CollapseType } from 'antd/lib/layout/Sider';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { BaseRouter } from 'next/dist/next-server/lib/router/router';
+import { AppContext } from 'store/context';
+import { MenuToggleAction } from 'store/actions';
 
 type Props = {
     // toggle: CollapseType;
@@ -35,9 +36,15 @@ type Props = {
 
 const Sidebar = ({ collapsed }: Props) => {
     const currentRouter: BaseRouter = useRouter();
-    console.log('currentRouter:', currentRouter);
+    const { state, dispatch } = useContext(AppContext);
+    const { toggle } = state.sidebar;
+
+    const toggleHandler = () => {
+        dispatch(MenuToggleAction({ toggle: !toggle }));
+    };
+
     return (
-        <SiderContainer collapsible collapsed={collapsed} /*onCollapse={toggle}*/ trigger={null}>
+        <SiderContainer collapsible collapsed={toggle} onCollapse={toggleHandler} trigger={null}>
             <Spring
                 native
                 from={{
@@ -115,7 +122,7 @@ const Sidebar = ({ collapsed }: Props) => {
                             >
                                 {/* Home */}
                                 <MenuItem key="/">
-                                    <Link href="/" activeClassName="active">
+                                    <Link href="/">
                                         <a>
                                             <HiHome />
                                             Home

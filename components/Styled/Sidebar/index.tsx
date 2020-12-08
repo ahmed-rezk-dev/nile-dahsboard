@@ -37,12 +37,14 @@ const AvatarImg = styled(animated.img)`
 const UsernameTitle = styled(animated.h3)`
     margin: 0.5rem 0 0;
     text-align: center;
+    font-size: 1rem;
     font-weight: 300;
     color: ${(props) => props.theme.colors.secondaryColor};
 `;
 
 const UserTypeTitle = styled(animated.h3)`
     text-align: center;
+    font-size: 0.8rem;
     font-weight: 200;
     color: ${(props) => props.theme.colors.normalColor};
 `;
@@ -151,6 +153,7 @@ const SubMenuContainer = styled(SubMenu)`
             color: ${(props) => props.theme.colors.sidebarBackground};
         }
     }
+
     .ant-menu-item-selected {
         background-color: ${(props) => props.theme.colors.sidebarBackground} !important;
         a {

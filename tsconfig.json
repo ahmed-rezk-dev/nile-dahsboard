@@ -20,7 +20,8 @@
         "baseUrl": ".",
         "paths": {
             "@/components/*": ["components/*"],
-            "@actions/@": ["store/actions/@"]
+            "@actions/*": ["store/actions/*"],
+            "@styled/*": ["components/Styled/*"]
         }
     },
     "exclude": ["node_modules", "**/*.spec.ts", "**/*.spec.tsx", "**/*.test.ts", "**/*.test.tsx"],

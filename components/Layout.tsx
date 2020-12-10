@@ -4,6 +4,7 @@ import Head from 'next/head';
 import { Layout as AntLayout } from 'antd';
 import Sidebar from '@/components/Sidebar';
 import Navbar from '@/components/Navbar';
+import FooterComponent from './Footer';
 const { Content } = AntLayout;
 
 type Props = {
@@ -45,10 +46,7 @@ const Layout = ({ children, title = 'This is the Pyramids Dashboard' }: Props) =
                 </Content>
 
                 {/* Footer */}
-                <footer>
-                    <hr />
-                    <span>I'm here to stay (Footer)</span>
-                </footer>
+                <FooterComponent />
             </AntLayout>
         </AntLayout>
     </div>

@@ -9,7 +9,7 @@ const MainContainer = styled(Header)`
     border: 1px solid #eee;
     border-radius: 5px;
     box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.09);
-    margin: 24px 24px 10px 24px;
+    margin: 24px 39px 10px 39px;
 `;
 const TriggerBtn = styled(Button)`
     color: rgba(0, 0, 0, 0.65);

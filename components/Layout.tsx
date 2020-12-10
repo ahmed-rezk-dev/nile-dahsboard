@@ -42,7 +42,7 @@ const Layout = ({ children, title = 'This is the Pyramids Dashboard' }: Props) =
 
                 {/* Content */}
                 <Content style={{ marginTop: 30 }}>
-                    <div style={{ padding: 24, minHeight: 360 }}> {children}</div>
+                    <div style={{ padding: '24px 50px', minHeight: 360 }}> {children}</div>
                 </Content>
 
                 {/* Footer */}

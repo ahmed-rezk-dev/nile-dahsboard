@@ -63,7 +63,7 @@ const SiderMenu = styled(Menu)`
     border: 1px solid ${(props) => props.theme.colors.sidebarBackground};
     padding: 1rem 0.5rem;
     border-radius: 1rem;
-    height: 50vh;
+    height: 65vh;
     position: fixed;
     max-width: 200px;
     .ant-menu-item {

@@ -23,6 +23,27 @@ const black = '#000';
 const headingColor = '#525f7f';
 const headingSmallColor = '#adb5bd';
 
+// #region Responsive breakpoints
+const xsSize = '576px';
+const smSize = '576px';
+const mdSize = '768px';
+const lgSize = '960px';
+const xlSize = '1140px';
+
+// Extra small devices (portrait phones, less than 576px)
+const xs = (style) => `@media (max-width: 575.98px) { ${style} }`;
+// Small devices (landscape phones, 576px and up)
+const sm = (style) => `@media (min-width: 576px) and (max-width: 767.98px) { ${style} }`;
+// Medium devices (tablets, 768px and up)
+const md = (style) => `@media (min-width: 768px) and (max-width: 991.98px) { ${style} }`;
+// Large devices (desktops, 992px and up)
+const lg = (style) => `@media (min-width: 992px) and (max-width: 1199.98px) { ${style} }`;
+// Extra large devices (large desktops, 1200px and up)
+const xl = (style) => `@media (min-width: 1200px) { ${style} }`;
+// XX large devices (large desktops, 1200px and up)
+const xxl = (style) => `@media only screen and (min-width: 1441px) { ${style} }`;
+// #endregion
+
 const verticalAlign = `
 	display: inline-flex;
 	align-items: center;
@@ -64,6 +85,7 @@ const theme = {
     spaces: {
         borderRadiusBase,
     },
+    grid: { xsSize, smSize, mdSize, lgSize, xlSize, xs, sm, md, lg, xl, xxl },
     utilities: { verticalAlign },
 };
 

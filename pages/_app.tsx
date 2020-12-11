@@ -6,14 +6,15 @@ import { AppProvider } from 'store/context';
 import Layout from '@/components/Layout';
 
 export default function App({ Component, pageProps }: AppProps) {
+    const GetLayout = (Component as any).Layout ? (Component as any).Layout : Layout;
     return (
         <>
             <GlobalStyle />
             <AppProvider>
                 <ThemeProvider theme={theme}>
-                    <Layout>
+                    <GetLayout>
                         <Component {...pageProps} />
-                    </Layout>
+                    </GetLayout>
                 </ThemeProvider>
             </AppProvider>
         </>

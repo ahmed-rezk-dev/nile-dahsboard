@@ -12,7 +12,7 @@ type Props = {
     title?: string;
 };
 
-const Layout = ({ children, title = 'This is the Pyramids Dashboard' }: Props) => (
+const Layout: React.FC<Props> = ({ children, title = 'This is the Pyramids Dashboard' }) => (
     <div>
         <Head>
             <title>{title}</title>

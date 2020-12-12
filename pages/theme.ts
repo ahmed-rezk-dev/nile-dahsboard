@@ -22,6 +22,7 @@ const white = '#fff';
 const black = '#000';
 const headingColor = '#525f7f';
 const headingSmallColor = '#adb5bd';
+const loginBGColor = '#172b4d';
 
 // #region Responsive breakpoints
 const xsSize = '576px';
@@ -74,6 +75,7 @@ const theme = {
         white,
         black,
         headingSmallColor,
+        loginBGColor,
     },
     fonts: ['sans-serif', 'Roboto'],
     fontSizes: {

@@ -8,7 +8,8 @@ import React from 'react';
 // core components
 import { Row, Col } from 'antd';
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
-import { Spring, animated } from 'react-spring';
+import { animated } from 'react-spring';
+import { Spring } from 'react-spring/renderprops.cjs';
 import UserMenu from '@/components/UserMenu';
 import NotificationsMenu from '@/components/NotificationsMenu';
 import { TriggerBtn, MainContainer } from '@/components/Styled/Navbar';

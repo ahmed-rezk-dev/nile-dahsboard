@@ -10,7 +10,7 @@ import { FormCard, FormCardInfo, LoginFormButton } from '@styled/Login';
 import { CardHeader } from '@styled/Card';
 
 interface Props {
-    changeFormHandler?: Function;
+    changeFormHandler: Function;
 }
 
 interface FormValues {
@@ -60,7 +60,7 @@ const LoginForm: React.FC<Props> = ({ changeFormHandler }) => {
                         </LoginFormButton>
                     </Row>
                     <Row justify="center">
-                        <Button type="link" onClick={() => changeFormHandler('forgetPassword')} href="#forgetPassword">
+                        <Button type="link" onClick={() => changeFormHandler('#forgetPassword')} href="#forgetPassword">
                             Forget Password
                         </Button>
                     </Row>

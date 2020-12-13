@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import LoginLayout from '@/components/LoginLayout';
 import { animated, useTransition } from 'react-spring';
 import LoginForm from '@/components/LoginForm';
@@ -15,21 +15,28 @@ import {
 } from '@/components/Styled/Login';
 import { Button } from 'antd';
 import { LinkedinOutlined, MailOutlined } from '@ant-design/icons';
+import ForgetPasswordUsingEmail from '@/components/ForgetPasswordUsingEmail';
 
 type Props = React.FC & {
     Layout?: typeof LoginLayout;
 };
 
-const Login: Props = ({}) => {
-    const [toggled, setToggled] = useState<string>('login');
+const Login: Props = React.memo(({}) => {
+    const [toggled, setToggled] = useState<string>('#login');
 
+    // Getting location hash to toggle form if exist
+    useEffect(() => {
+        const urlHash = window.location.hash;
+        if (urlHash !== '') setToggled(urlHash);
+    }, []);
+
+    // Change form handler
     const changeFormHandler = (formName: string) => {
         setToggled(formName);
     };
 
-    const items = { login: <LoginForm changeFormHandler={changeFormHandler} />, forgetPassword: '🤪' };
-
-    const transition = useTransition(items[toggled], {
+    // Setting up animation
+    const transition = useTransition(toggled, null, {
         from: {
             opacity: 0,
             transform: 'translate3d(100%,0,0)',
@@ -39,9 +46,24 @@ const Login: Props = ({}) => {
         leave: { opacity: 0, transform: 'translate3d(-10%,0,0)' },
     });
 
-    const transitionRender = transition((values, item) => <animated.div style={values as any}>{item}</animated.div>);
+    // Render forms
+    const transitionForms = () =>
+        transition.map(({ _item, props, key }) => {
+            const loginForm = (
+                <animated.div key={key} style={props}>
+                    <LoginForm changeFormHandler={changeFormHandler} />
+                </animated.div>
+            );
 
-    const formHandler = React.useMemo(() => transitionRender, [toggled]);
+            const forgetPasswordForm = (
+                <animated.div key={key} style={props}>
+                    <ForgetPasswordUsingEmail changeFormHandler={changeFormHandler} />
+                </animated.div>
+            );
+
+            if (toggled === '#login') return loginForm;
+            else return forgetPasswordForm;
+        });
 
     return (
         <MainContainer>
@@ -63,8 +85,8 @@ const Login: Props = ({}) => {
             </LoginHeader>
 
             {/* Forms */}
-            <LoginFormContainer justify="center">{formHandler}</LoginFormContainer>
-            {/* <Button onClick={() => setToggled('forgetPassword')}>toggled</Button> */}
+            <LoginFormContainer justify="center">{transitionForms()}</LoginFormContainer>
+
             {/* footer */}
             <LoginFooterContainer>
                 <LoginFooterLinksContainer>
@@ -93,7 +115,7 @@ const Login: Props = ({}) => {
             </LoginFooterContainer>
         </MainContainer>
     );
-};
+});
 
 Login.Layout = LoginLayout;
 

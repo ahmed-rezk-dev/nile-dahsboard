@@ -8,6 +8,7 @@ import { Form, Input, Button, Row } from 'antd';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import { FormCard, FormCardInfo, LoginFormButton } from '@styled/Login';
 import { CardHeader } from '@styled/Card';
+import { useRouter } from 'next/router';
 
 interface Props {
     changeFormHandler: Function;
@@ -19,8 +20,10 @@ interface FormValues {
 }
 
 const LoginForm: React.FC<Props> = ({ changeFormHandler }) => {
+    const router = useRouter();
     const handleSubmitForm = (values: FormValues) => {
         console.log('values', values);
+        router.push('/');
     };
 
     return (

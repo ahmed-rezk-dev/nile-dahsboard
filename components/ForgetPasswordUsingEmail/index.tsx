@@ -6,7 +6,7 @@ import { FormCard } from '@styled/Login';
 import { CardHeader } from '@styled/Card';
 
 interface Props {
-    changeFormHandler?: Function;
+    changeFormHandler: Function;
 }
 
 interface FormValues {
@@ -20,6 +20,7 @@ const Text = styled.p`
 const ForgetPasswordUsingEmail: React.FC<Props> = ({ changeFormHandler }) => {
     const handleSubmitForm = (values: FormValues) => {
         console.log('values:', values);
+        changeFormHandler('#resetForm');
     };
 
     return (

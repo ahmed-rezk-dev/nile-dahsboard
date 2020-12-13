@@ -16,6 +16,7 @@ import {
 import { Button } from 'antd';
 import { LinkedinOutlined, MailOutlined } from '@ant-design/icons';
 import ForgetPasswordUsingEmail from '@/components/ForgetPasswordUsingEmail';
+import ResetForm from '@/components/ForgetPasswordUsingEmail/resetForm';
 
 type Props = React.FC & {
     Layout?: typeof LoginLayout;
@@ -48,7 +49,7 @@ const Login: Props = React.memo(({}) => {
 
     // Render forms
     const transitionForms = () =>
-        transition.map(({ _item, props, key }) => {
+        transition.map(({ item, props, key }) => {
             const loginForm = (
                 <animated.div key={key} style={props}>
                     <LoginForm changeFormHandler={changeFormHandler} />
@@ -61,8 +62,15 @@ const Login: Props = React.memo(({}) => {
                 </animated.div>
             );
 
+            const resetPasswordForm = (
+                <animated.div key={key} style={props}>
+                    <ResetForm changeFormHandler={changeFormHandler} />
+                </animated.div>
+            );
+
             if (toggled === '#login') return loginForm;
-            else return forgetPasswordForm;
+            else if (toggled === '#forgetPassword') return forgetPasswordForm;
+            else return resetPasswordForm;
         });
 
     return (

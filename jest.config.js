@@ -5,6 +5,7 @@ module.exports = {
     transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(ts|tsx)$'],
     transform: {
         '^.+\\.(ts|tsx)$': 'babel-jest',
+        '\\.graphql$': ['graphql-let/jestTransformer', { subsequentTransformer: 'babel-jest' }],
     },
     watchPlugins: ['jest-watch-typeahead/filename', 'jest-watch-typeahead/testname'],
     moduleNameMapper: {

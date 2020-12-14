@@ -2,15 +2,21 @@
     "name": "with-typescript",
     "version": "1.0.0",
     "scripts": {
-        "dev": "NODE_OPTIONS='--inspect' next dev",
-        "build": "next build",
+        "dev": "NODE_OPTIONS='--inspect' next dev && codegen",
+        "codegen": "graphql-let",
+        "build": "yarn codegen && next build",
+        "test": "yarn codegen && jest",
         "start": "next start",
-        "type-check": "tsc",
-        "test": "jest",
-        "test:watch": "npm run test -- --watch"
+        "test:watch": "npm run test -- --watch",
+        "type-check": "tsc"
     },
     "dependencies": {
+        "@apollo/client": "^3.3.6",
+        "@graphql-tools/load-files": "^6.2.5",
+        "@graphql-tools/merge": "^6.2.6",
+        "@graphql-tools/schema": "^7.1.2",
         "antd": "^4.8.5",
+        "graphql": "^15.4.0",
         "next": "latest",
         "react": "^16.12.0",
         "react-dom": "^16.12.0",
@@ -34,7 +40,8 @@
         "jest-watch-typeahead": "^0.6.1",
         "mutationobserver-shim": "^0.3.7",
         "ts-jest": "^26.4.4",
-        "typescript": "4.0"
+        "typescript": "4.0",
+        "yaml-loader": "^0.6.0"
     },
     "license": "MIT"
 }

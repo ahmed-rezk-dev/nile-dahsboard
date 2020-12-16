@@ -18,6 +18,7 @@
         "strict": true,
         "target": "esnext",
         "baseUrl": ".",
+        "plugins": [{ "name": "nexus/typescript-language-service" }], // To improve the development experience with nexus
         "paths": {
             "@/components/*": ["components/*"],
             "@actions/*": ["store/actions/*"],

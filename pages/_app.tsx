@@ -4,7 +4,7 @@ import 'antd/dist/antd.css';
 import theme, { GlobalStyle } from './theme';
 import { AppProvider } from 'store/context';
 import Layout from '@/components/Layout';
-import { useApollo } from 'lib/apollo';
+import { useApollo } from 'graphql/apollo';
 import { ApolloProvider } from '@apollo/client';
 
 export default function App({ Component, pageProps }: AppProps) {

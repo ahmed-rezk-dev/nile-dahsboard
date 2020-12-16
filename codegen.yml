@@ -1,12 +1,3 @@
-# schema: 'http://localhost:3000/api/graphql'
-# # schemaEntrypoint: 'lib/type-defs.graphqls'
-# documents: '**/*.graphql'
-# plugins:
-#     - typescript
-#     - typescript-operations
-#     - typescript-react-apollo
-# cacheDir: __generated__
-
 overwrite: true
 schema: 'http://localhost:3000/api/graphql' # GraphQL endpoint via the nexus dev server
 documents: 'graphql/**/*.graphql.ts' # parse graphql operations in matching files

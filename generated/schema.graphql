@@ -2,17 +2,50 @@
 ### Do not make changes to this file directly
 
 
+type AuthPayload {
+  token: String!
+  user: User
+}
+
 type BatchPayload {
   count: Int!
 }
 
+scalar DateTime
+
+input DateTimeFieldUpdateOperationsInput {
+  set: DateTime
+}
+
+input DateTimeFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: NestedDateTimeFilter
+  notIn: [DateTime!]
+}
+
 type Mutation {
-  bigRedButton: String
   createOneUser(data: UserCreateInput!): User!
   deleteManyUser(where: UserWhereInput): BatchPayload!
   deleteOneUser(where: UserWhereUniqueInput!): User
+  login(email: String!, password: String!): AuthPayload!
   updateManyUser(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   updateOneUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+}
+
+input NestedDateTimeFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: NestedDateTimeFilter
+  notIn: [DateTime!]
 }
 
 input NestedStringFilter {
@@ -60,36 +93,66 @@ input StringFilter {
 }
 
 type User {
+  createdAt: DateTime!
   email: String!
+  firstname: String!
   id: String!
-  name: String!
+  lastname: String!
+  password: String!
+  phone: String!
+  role: String!
+  updatedAt: DateTime!
 }
 
 input UserCreateInput {
+  createdAt: DateTime
   email: String!
+  firstname: String!
   id: String
-  name: String!
+  lastname: String!
+  password: String!
+  phone: String!
+  role: String!
+  updatedAt: DateTime
 }
 
 input UserUpdateInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
+  firstname: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
-  name: StringFieldUpdateOperationsInput
+  lastname: StringFieldUpdateOperationsInput
+  password: StringFieldUpdateOperationsInput
+  phone: StringFieldUpdateOperationsInput
+  role: StringFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input UserUpdateManyMutationInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
+  firstname: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
-  name: StringFieldUpdateOperationsInput
+  lastname: StringFieldUpdateOperationsInput
+  password: StringFieldUpdateOperationsInput
+  phone: StringFieldUpdateOperationsInput
+  role: StringFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input UserWhereInput {
   AND: [UserWhereInput!]
+  createdAt: DateTimeFilter
   email: StringFilter
+  firstname: StringFilter
   id: StringFilter
-  name: StringFilter
+  lastname: StringFilter
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
+  password: StringFilter
+  phone: StringFilter
+  role: StringFilter
+  updatedAt: DateTimeFilter
 }
 
 input UserWhereUniqueInput {

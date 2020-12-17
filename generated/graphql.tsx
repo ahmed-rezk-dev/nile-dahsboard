@@ -11,13 +11,26 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  DateTime: any;
 };
 
 export type User = {
   __typename?: 'User';
   id: Scalars['String'];
-  name: Scalars['String'];
   email: Scalars['String'];
+  firstname: Scalars['String'];
+  lastname: Scalars['String'];
+  password: Scalars['String'];
+  phone: Scalars['String'];
+  role: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+};
+
+export type AuthPayload = {
+  __typename?: 'AuthPayload';
+  token: Scalars['String'];
+  user?: Maybe<User>;
 };
 
 export type Query = {
@@ -42,12 +55,12 @@ export type QueryUsersArgs = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  bigRedButton?: Maybe<Scalars['String']>;
   createOneUser: User;
   deleteOneUser?: Maybe<User>;
   deleteManyUser: BatchPayload;
   updateOneUser?: Maybe<User>;
   updateManyUser: BatchPayload;
+  login: AuthPayload;
 };
 
 
@@ -77,14 +90,27 @@ export type MutationUpdateManyUserArgs = {
   where?: Maybe<UserWhereInput>;
 };
 
+
+export type MutationLoginArgs = {
+  email: Scalars['String'];
+  password: Scalars['String'];
+};
+
+
 export type UserWhereUniqueInput = {
   id?: Maybe<Scalars['String']>;
 };
 
 export type UserCreateInput = {
   id?: Maybe<Scalars['String']>;
-  name: Scalars['String'];
+  firstname: Scalars['String'];
+  lastname: Scalars['String'];
   email: Scalars['String'];
+  phone: Scalars['String'];
+  password: Scalars['String'];
+  role: Scalars['String'];
+  createdAt?: Maybe<Scalars['DateTime']>;
+  updatedAt?: Maybe<Scalars['DateTime']>;
 };
 
 export type BatchPayload = {
@@ -97,20 +123,38 @@ export type UserWhereInput = {
   OR?: Maybe<Array<UserWhereInput>>;
   NOT?: Maybe<Array<UserWhereInput>>;
   id?: Maybe<StringFilter>;
-  name?: Maybe<StringFilter>;
+  firstname?: Maybe<StringFilter>;
+  lastname?: Maybe<StringFilter>;
   email?: Maybe<StringFilter>;
+  phone?: Maybe<StringFilter>;
+  password?: Maybe<StringFilter>;
+  role?: Maybe<StringFilter>;
+  createdAt?: Maybe<DateTimeFilter>;
+  updatedAt?: Maybe<DateTimeFilter>;
 };
 
 export type UserUpdateInput = {
   id?: Maybe<StringFieldUpdateOperationsInput>;
-  name?: Maybe<StringFieldUpdateOperationsInput>;
+  firstname?: Maybe<StringFieldUpdateOperationsInput>;
+  lastname?: Maybe<StringFieldUpdateOperationsInput>;
   email?: Maybe<StringFieldUpdateOperationsInput>;
+  phone?: Maybe<StringFieldUpdateOperationsInput>;
+  password?: Maybe<StringFieldUpdateOperationsInput>;
+  role?: Maybe<StringFieldUpdateOperationsInput>;
+  createdAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
+  updatedAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
 };
 
 export type UserUpdateManyMutationInput = {
   id?: Maybe<StringFieldUpdateOperationsInput>;
-  name?: Maybe<StringFieldUpdateOperationsInput>;
+  firstname?: Maybe<StringFieldUpdateOperationsInput>;
+  lastname?: Maybe<StringFieldUpdateOperationsInput>;
   email?: Maybe<StringFieldUpdateOperationsInput>;
+  phone?: Maybe<StringFieldUpdateOperationsInput>;
+  password?: Maybe<StringFieldUpdateOperationsInput>;
+  role?: Maybe<StringFieldUpdateOperationsInput>;
+  createdAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
+  updatedAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
 };
 
 export type StringFilter = {
@@ -128,8 +172,23 @@ export type StringFilter = {
   not?: Maybe<NestedStringFilter>;
 };
 
+export type DateTimeFilter = {
+  equals?: Maybe<Scalars['DateTime']>;
+  in?: Maybe<Array<Scalars['DateTime']>>;
+  notIn?: Maybe<Array<Scalars['DateTime']>>;
+  lt?: Maybe<Scalars['DateTime']>;
+  lte?: Maybe<Scalars['DateTime']>;
+  gt?: Maybe<Scalars['DateTime']>;
+  gte?: Maybe<Scalars['DateTime']>;
+  not?: Maybe<NestedDateTimeFilter>;
+};
+
 export type StringFieldUpdateOperationsInput = {
   set?: Maybe<Scalars['String']>;
+};
+
+export type DateTimeFieldUpdateOperationsInput = {
+  set?: Maybe<Scalars['DateTime']>;
 };
 
 export enum QueryMode {
@@ -151,6 +210,36 @@ export type NestedStringFilter = {
   not?: Maybe<NestedStringFilter>;
 };
 
+export type NestedDateTimeFilter = {
+  equals?: Maybe<Scalars['DateTime']>;
+  in?: Maybe<Array<Scalars['DateTime']>>;
+  notIn?: Maybe<Array<Scalars['DateTime']>>;
+  lt?: Maybe<Scalars['DateTime']>;
+  lte?: Maybe<Scalars['DateTime']>;
+  gt?: Maybe<Scalars['DateTime']>;
+  gte?: Maybe<Scalars['DateTime']>;
+  not?: Maybe<NestedDateTimeFilter>;
+};
+
+export type UserFragmentFragment = (
+  { __typename?: 'User' }
+  & Pick<User, 'id' | 'firstname' | 'lastname' | 'email' | 'password' | 'phone' | 'role' | 'createdAt' | 'updatedAt'>
+);
+
+export type LoginMutationVariables = Exact<{
+  email: Scalars['String'];
+  password: Scalars['String'];
+}>;
+
+
+export type LoginMutation = (
+  { __typename?: 'Mutation' }
+  & { login: (
+    { __typename?: 'AuthPayload' }
+    & Pick<AuthPayload, 'token'>
+  ) }
+);
+
 export type AllUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -158,20 +247,63 @@ export type AllUsersQuery = (
   { __typename?: 'Query' }
   & { allUsers?: Maybe<Array<Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'name' | 'email'>
+    & UserFragmentFragment
   )>>> }
 );
 
-
-export const AllUsersDocument = gql`
-    query AllUsers {
-  allUsers {
-    id
-    name
-    email
+export const UserFragmentFragmentDoc = gql`
+    fragment UserFragment on User {
+  id
+  firstname
+  lastname
+  email
+  password
+  phone
+  role
+  createdAt
+  updatedAt
+}
+    `;
+export const LoginDocument = gql`
+    mutation Login($email: String!, $password: String!) {
+  login(email: $email, password: $password) {
+    token
   }
 }
     `;
+export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
+
+/**
+ * __useLoginMutation__
+ *
+ * To run a mutation, you first call `useLoginMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLoginMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [loginMutation, { data, loading, error }] = useLoginMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      password: // value for 'password'
+ *   },
+ * });
+ */
+export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
+        return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, baseOptions);
+      }
+export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
+export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
+export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
+export const AllUsersDocument = gql`
+    query AllUsers {
+  allUsers {
+    ...UserFragment
+  }
+}
+    ${UserFragmentFragmentDoc}`;
 
 /**
  * __useAllUsersQuery__

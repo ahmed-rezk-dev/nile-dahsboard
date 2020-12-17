@@ -2,18 +2,20 @@
     "name": "with-typescript",
     "version": "1.0.0",
     "scripts": {
-        "dev": "NODE_OPTIONS='--inspect' next dev && codegen",
+        "dev": "concurrently \"NODE_OPTIONS='--inspect' next dev \" \"yarn codegen\" ",
         "build": "yarn codegen && next build",
         "test": "yarn codegen && jest",
         "start": "next start",
         "test:watch": "npm run test -- --watch",
         "type-check": "tsc",
-        "codegen": "yarn graphql-codegen --watch",
+        "codegen": "npx graphql-codegen --watch",
         "generate": "npm -s run generate:prisma && npm -s run generate:nexus",
         "dev:migrate": "npx prisma migrate dev --preview-feature && npx prisma db push --preview-feature",
+        "generate:nexus": "ts-node --transpile-only -P nexus.tsconfig.json pages/api",
+        "prisma:generate": "npx prisma generate",
         "prisma:push": "npx prisma db push --preview-feature",
-        "generate:prisma": "prisma generate",
-        "generate:nexus": "ts-node --transpile-only -P nexus.tsconfig.json pages/api"
+        "prisma:studio": "npx prisma studio",
+        "prisma:go": "yarn prisma:generate && yarn prisma:push"
     },
     "dependencies": {
         "@apollo/client": "^3.3.6",

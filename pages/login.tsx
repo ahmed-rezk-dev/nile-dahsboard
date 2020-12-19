@@ -16,13 +16,13 @@ import {
 import { Button } from 'antd';
 import { LinkedinOutlined, MailOutlined } from '@ant-design/icons';
 import ForgetPasswordUsingEmail from '@/components/ForgetPasswordUsingEmail';
-import ResetForm from '@/components/ForgetPasswordUsingEmail/resetForm';
+import ResetForm from '@/components/ForgetPasswordUsingEmail/ResetForm';
 
 type Props = React.FC & {
     Layout?: typeof LoginLayout;
 };
 
-const Login: Props = React.memo(({}) => {
+const Login: Props = ({}) => {
     const [toggled, setToggled] = useState<string>('#login');
 
     // Getting location hash to toggle form if exist
@@ -123,7 +123,7 @@ const Login: Props = React.memo(({}) => {
             </LoginFooterContainer>
         </MainContainer>
     );
-});
+};
 
 Login.Layout = LoginLayout;
 

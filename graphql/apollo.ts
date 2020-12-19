@@ -1,6 +1,9 @@
 import { IncomingMessage, ServerResponse } from 'http';
 import { useMemo } from 'react';
 import { ApolloClient, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
+import { onError } from '@apollo/client/link/error';
+import { message as antMessage } from 'antd';
+import { isBrowser } from 'utils/isBrowser';
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
@@ -8,6 +11,17 @@ export type ResolverContext = {
     req?: IncomingMessage;
     res?: ServerResponse;
 };
+
+const link = onError(({ graphQLErrors, networkError }) => {
+    if (graphQLErrors)
+        graphQLErrors.map(({ message, locations, path }) => {
+            console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
+            if (isBrowser) {
+                antMessage.error(message as string);
+            }
+        });
+    if (networkError) console.log(`[Network error]: ${networkError}`);
+});
 
 function createIsomorphLink(context: ResolverContext = {}) {
     if (typeof window === 'undefined') {
@@ -26,7 +40,7 @@ function createIsomorphLink(context: ResolverContext = {}) {
 function createApolloClient(context?: ResolverContext) {
     return new ApolloClient({
         ssrMode: typeof window === 'undefined',
-        link: createIsomorphLink(context),
+        link: link.concat(createIsomorphLink(context)),
         cache: new InMemoryCache(),
     });
 }

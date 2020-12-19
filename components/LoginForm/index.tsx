@@ -4,11 +4,12 @@
  *
  */
 import React from 'react';
-import { Form, Input, Button, Row } from 'antd';
+import { Form, Input, Button, Row, message } from 'antd';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import { FormCard, FormCardInfo, LoginFormButton } from '@styled/Login';
 import { CardHeader } from '@styled/Card';
 import { useRouter } from 'next/router';
+import { useLoginMutation } from 'generated/graphql';
 
 interface Props {
     changeFormHandler: Function;
@@ -21,9 +22,13 @@ interface FormValues {
 
 const LoginForm: React.FC<Props> = ({ changeFormHandler }) => {
     const router = useRouter();
-    const handleSubmitForm = (values: FormValues) => {
-        console.log('values', values);
-        router.push('/');
+    const [login, { loading }] = useLoginMutation();
+
+    const handleSubmitForm = async (values: FormValues) => {
+        try {
+            await login({ variables: values });
+            router.push('/');
+        } catch (error) {}
     };
 
     return (
@@ -58,7 +63,7 @@ const LoginForm: React.FC<Props> = ({ changeFormHandler }) => {
                 </Form.Item>
                 <Form.Item>
                     <Row justify="center">
-                        <LoginFormButton type="primary" htmlType="submit" size="large">
+                        <LoginFormButton type="primary" htmlType="submit" size="large" loading={loading}>
                             Login
                         </LoginFormButton>
                     </Row>

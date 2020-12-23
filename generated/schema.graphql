@@ -2,9 +2,69 @@
 ### Do not make changes to this file directly
 
 
+type Auth {
+  id: String!
+  refreshToken: String!
+  tokenExpiry: Int!
+  userId: String!
+}
+
+input AuthCreateOneWithoutUserInput {
+  connect: AuthWhereUniqueInput
+  connectOrCreate: AuthCreateOrConnectWithoutuserInput
+  create: AuthCreateWithoutUserInput
+}
+
+input AuthCreateOrConnectWithoutuserInput {
+  create: AuthCreateWithoutUserInput!
+  where: AuthWhereUniqueInput!
+}
+
+input AuthCreateWithoutUserInput {
+  id: String
+  refreshToken: String!
+  tokenExpiry: Int!
+}
+
 type AuthPayload {
   token: String!
   user: User
+}
+
+input AuthUpdateOneWithoutUserInput {
+  connect: AuthWhereUniqueInput
+  connectOrCreate: AuthCreateOrConnectWithoutuserInput
+  create: AuthCreateWithoutUserInput
+  delete: Boolean
+  disconnect: Boolean
+  update: AuthUpdateWithoutUserInput
+  upsert: AuthUpsertWithoutUserInput
+}
+
+input AuthUpdateWithoutUserInput {
+  id: StringFieldUpdateOperationsInput
+  refreshToken: StringFieldUpdateOperationsInput
+  tokenExpiry: IntFieldUpdateOperationsInput
+}
+
+input AuthUpsertWithoutUserInput {
+  create: AuthCreateWithoutUserInput!
+  update: AuthUpdateWithoutUserInput!
+}
+
+input AuthWhereInput {
+  AND: [AuthWhereInput!]
+  id: StringFilter
+  NOT: [AuthWhereInput!]
+  OR: [AuthWhereInput!]
+  refreshToken: StringFilter
+  tokenExpiry: IntFilter
+  user: UserWhereInput
+  userId: StringFilter
+}
+
+input AuthWhereUniqueInput {
+  id: String
 }
 
 type BatchPayload {
@@ -28,11 +88,33 @@ input DateTimeFilter {
   notIn: [DateTime!]
 }
 
+input IntFieldUpdateOperationsInput {
+  decrement: Int
+  divide: Int
+  increment: Int
+  multiply: Int
+  set: Int
+}
+
+input IntFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: NestedIntFilter
+  notIn: [Int!]
+}
+
 type Mutation {
   createOneUser(data: UserCreateInput!): User!
   deleteManyUser(where: UserWhereInput): BatchPayload!
   deleteOneUser(where: UserWhereUniqueInput!): User
   login(email: String!, password: String!): AuthPayload!
+  logout(userId: String!): String!
+  refreshToken(userId: String!): String!
+  refreshUserToken(userId: String!): AuthPayload!
   updateManyUser(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   updateOneUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
 }
@@ -46,6 +128,17 @@ input NestedDateTimeFilter {
   lte: DateTime
   not: NestedDateTimeFilter
   notIn: [DateTime!]
+}
+
+input NestedIntFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: NestedIntFilter
+  notIn: [Int!]
 }
 
 input NestedStringFilter {
@@ -93,6 +186,7 @@ input StringFilter {
 }
 
 type User {
+  auth: Auth
   createdAt: DateTime!
   email: String!
   firstname: String!
@@ -105,6 +199,7 @@ type User {
 }
 
 input UserCreateInput {
+  auth: AuthCreateOneWithoutUserInput
   createdAt: DateTime
   email: String!
   firstname: String!
@@ -112,11 +207,12 @@ input UserCreateInput {
   lastname: String!
   password: String!
   phone: String!
-  role: String!
+  role: String
   updatedAt: DateTime
 }
 
 input UserUpdateInput {
+  auth: AuthUpdateOneWithoutUserInput
   createdAt: DateTimeFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
   firstname: StringFieldUpdateOperationsInput
@@ -142,6 +238,7 @@ input UserUpdateManyMutationInput {
 
 input UserWhereInput {
   AND: [UserWhereInput!]
+  auth: AuthWhereInput
   createdAt: DateTimeFilter
   email: StringFilter
   firstname: StringFilter

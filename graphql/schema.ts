@@ -2,7 +2,8 @@ import { objectType, queryType, mutationType, makeSchema, stringArg, nonNull } f
 import { nexusPrisma } from 'nexus-plugin-prisma';
 import path from 'path';
 import { compare } from 'bcrypt';
-import { generateToken } from 'utils/generateToken';
+import { Decode, decodeToken, generateAccessToken, generateRefreshToken } from 'utils/generateToken';
+import { BASE_URL, REFRESH_TOKEN_EXPIRES } from 'utils/config';
 
 const User = objectType({
     name: 'User',
@@ -14,8 +15,19 @@ const User = objectType({
         t.model.password();
         t.model.phone();
         t.model.role();
+        t.model.auth();
         t.model.createdAt();
         t.model.updatedAt();
+    },
+});
+
+const Auth = objectType({
+    name: 'Auth',
+    definition(t) {
+        t.model.id();
+        t.model.refreshToken();
+        t.model.tokenExpiry();
+        t.model.userId();
     },
 });
 
@@ -28,6 +40,20 @@ export const AuthPayload = objectType({
         });
     },
 });
+
+const REFRESH_TOKEN_COOKIE_OPTIONS: any = {
+    // Get part after // and before : (in case port number in URL)
+    domain: BASE_URL.split('//')[1].split(':')[0],
+    httpOnly: true,
+    path: '/',
+    sameSite: true,
+    secure: !!BASE_URL.includes('https'),
+};
+
+const baseUrl = BASE_URL.split('//')[1].split(':')[0];
+const secure = !!BASE_URL.includes('https') ? 'secure' : '';
+
+const setCookieHeaderOptions: any = `domain=${baseUrl};httpOnly;path=/;sameSite;${secure}`;
 
 const Query = queryType({
     definition(t) {
@@ -55,9 +81,9 @@ const Mutation = mutationType({
         t.nonNull.field('login', {
             type: 'AuthPayload',
             args: { email: nonNull(stringArg()), password: nonNull(stringArg()) },
-            resolve: async (_parent, { email, password }, ctx) => {
-                // 1- Check if user is exist
-                const user = await ctx.prisma.user.findFirst({ where: { email } });
+            resolve: async (_parent, { email, password }, { prisma, setCookies, res }) => {
+                // 1- Check if userJavaScript is exist
+                const user = await prisma.user.findFirst({ where: { email } });
                 if (!user) {
                     throw new Error('User is not exist!');
                 }
@@ -69,15 +95,55 @@ const Mutation = mutationType({
                 }
 
                 // 3- Generate token if email/password are correct
-                const token = generateToken(user);
+                const token = generateAccessToken(user);
+                const refreshToken = generateRefreshToken();
+                const refreshTokenDecode = decodeToken(refreshToken) as Decode;
+
+                res?.setHeader('set-cookie', [
+                    `refreshToken=${refreshToken};Max-Age=${REFRESH_TOKEN_EXPIRES};${setCookieHeaderOptions}`,
+                ]);
+
+                await prisma.user.update({
+                    where: { id: user.id },
+                    data: { auth: { update: { refreshToken, tokenExpiry: refreshTokenDecode.exp } } },
+                });
+
                 return { token, user };
+            },
+        });
+
+        // Refresh token
+        t.nonNull.field('refreshUserToken', {
+            type: 'AuthPayload',
+            args: { userId: nonNull(stringArg()) },
+            resolve: async (_parent, { userId }, { req }) => {
+                const { refreshToken } = req.cookies;
+                if (!refreshToken) throw new Error('No refresh token provided');
+            },
+        });
+
+        // Refresh token
+        t.nonNull.field('refreshToken', {
+            type: 'String',
+            args: { userId: nonNull(stringArg()) },
+            resolve: async (_parent, { userId }, { req, setCookies }) => {
+                // TODO
+            },
+        });
+
+        // Logout
+        t.nonNull.field('logout', {
+            type: 'String',
+            args: { userId: nonNull(stringArg()) },
+            resolve: async (_parent, { userId }, { req, serCookies }) => {
+                // TODO
             },
         });
     },
 });
 
 export const schema = makeSchema({
-    types: [User, AuthPayload, Query, Mutation],
+    types: [User, Auth, AuthPayload, Query, Mutation],
     plugins: [nexusPrisma({ experimentalCRUD: true })],
     outputs: {
         typegen: path.join(process.cwd(), 'generated', 'nexus-typegen.ts'),

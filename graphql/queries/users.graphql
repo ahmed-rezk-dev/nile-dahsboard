@@ -1,5 +1,8 @@
 query AllUsers {
     allUsers {
         ...UserFragment
+        auth {
+            ...AuthFragment
+        }
     }
 }

@@ -1,3 +1,4 @@
+export const BASE_URL = process.env.BASE_URL || '';
 export const ACCESS_TOKEN_TYPE = process.env.ACCESS_TOKEN_TYPE || 'HS256';
 export const ACCESS_TOKEN_SECRET =
     process.env.ACCESS_TOKEN_SECRET || '3EK6FD+o0+c7tzBNVfjpMkNDi2yARAAKzQlk8O2IKoxQu4nF7EdAh8s3TwpHwrdWT6R';

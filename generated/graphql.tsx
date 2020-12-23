@@ -23,8 +23,17 @@ export type User = {
   password: Scalars['String'];
   phone: Scalars['String'];
   role: Scalars['String'];
+  auth?: Maybe<Auth>;
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
+};
+
+export type Auth = {
+  __typename?: 'Auth';
+  id: Scalars['String'];
+  refreshToken: Scalars['String'];
+  tokenExpiry: Scalars['Int'];
+  userId: Scalars['String'];
 };
 
 export type AuthPayload = {
@@ -61,6 +70,9 @@ export type Mutation = {
   updateOneUser?: Maybe<User>;
   updateManyUser: BatchPayload;
   login: AuthPayload;
+  refreshUserToken: AuthPayload;
+  refreshToken: Scalars['String'];
+  logout: Scalars['String'];
 };
 
 
@@ -97,6 +109,21 @@ export type MutationLoginArgs = {
 };
 
 
+export type MutationRefreshUserTokenArgs = {
+  userId: Scalars['String'];
+};
+
+
+export type MutationRefreshTokenArgs = {
+  userId: Scalars['String'];
+};
+
+
+export type MutationLogoutArgs = {
+  userId: Scalars['String'];
+};
+
+
 export type UserWhereUniqueInput = {
   id?: Maybe<Scalars['String']>;
 };
@@ -108,9 +135,10 @@ export type UserCreateInput = {
   email: Scalars['String'];
   phone: Scalars['String'];
   password: Scalars['String'];
-  role: Scalars['String'];
+  role?: Maybe<Scalars['String']>;
   createdAt?: Maybe<Scalars['DateTime']>;
   updatedAt?: Maybe<Scalars['DateTime']>;
+  auth?: Maybe<AuthCreateOneWithoutUserInput>;
 };
 
 export type BatchPayload = {
@@ -129,6 +157,7 @@ export type UserWhereInput = {
   phone?: Maybe<StringFilter>;
   password?: Maybe<StringFilter>;
   role?: Maybe<StringFilter>;
+  auth?: Maybe<AuthWhereInput>;
   createdAt?: Maybe<DateTimeFilter>;
   updatedAt?: Maybe<DateTimeFilter>;
 };
@@ -143,6 +172,7 @@ export type UserUpdateInput = {
   role?: Maybe<StringFieldUpdateOperationsInput>;
   createdAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
   updatedAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
+  auth?: Maybe<AuthUpdateOneWithoutUserInput>;
 };
 
 export type UserUpdateManyMutationInput = {
@@ -155,6 +185,12 @@ export type UserUpdateManyMutationInput = {
   role?: Maybe<StringFieldUpdateOperationsInput>;
   createdAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
   updatedAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
+};
+
+export type AuthCreateOneWithoutUserInput = {
+  create?: Maybe<AuthCreateWithoutUserInput>;
+  connect?: Maybe<AuthWhereUniqueInput>;
+  connectOrCreate?: Maybe<AuthCreateOrConnectWithoutuserInput>;
 };
 
 export type StringFilter = {
@@ -170,6 +206,17 @@ export type StringFilter = {
   endsWith?: Maybe<Scalars['String']>;
   mode?: Maybe<QueryMode>;
   not?: Maybe<NestedStringFilter>;
+};
+
+export type AuthWhereInput = {
+  AND?: Maybe<Array<AuthWhereInput>>;
+  OR?: Maybe<Array<AuthWhereInput>>;
+  NOT?: Maybe<Array<AuthWhereInput>>;
+  id?: Maybe<StringFilter>;
+  refreshToken?: Maybe<StringFilter>;
+  tokenExpiry?: Maybe<IntFilter>;
+  user?: Maybe<UserWhereInput>;
+  userId?: Maybe<StringFilter>;
 };
 
 export type DateTimeFilter = {
@@ -191,6 +238,31 @@ export type DateTimeFieldUpdateOperationsInput = {
   set?: Maybe<Scalars['DateTime']>;
 };
 
+export type AuthUpdateOneWithoutUserInput = {
+  create?: Maybe<AuthCreateWithoutUserInput>;
+  connect?: Maybe<AuthWhereUniqueInput>;
+  disconnect?: Maybe<Scalars['Boolean']>;
+  delete?: Maybe<Scalars['Boolean']>;
+  update?: Maybe<AuthUpdateWithoutUserInput>;
+  upsert?: Maybe<AuthUpsertWithoutUserInput>;
+  connectOrCreate?: Maybe<AuthCreateOrConnectWithoutuserInput>;
+};
+
+export type AuthCreateWithoutUserInput = {
+  id?: Maybe<Scalars['String']>;
+  refreshToken: Scalars['String'];
+  tokenExpiry: Scalars['Int'];
+};
+
+export type AuthWhereUniqueInput = {
+  id?: Maybe<Scalars['String']>;
+};
+
+export type AuthCreateOrConnectWithoutuserInput = {
+  where: AuthWhereUniqueInput;
+  create: AuthCreateWithoutUserInput;
+};
+
 export enum QueryMode {
   Default = 'default',
   Insensitive = 'insensitive'
@@ -210,6 +282,17 @@ export type NestedStringFilter = {
   not?: Maybe<NestedStringFilter>;
 };
 
+export type IntFilter = {
+  equals?: Maybe<Scalars['Int']>;
+  in?: Maybe<Array<Scalars['Int']>>;
+  notIn?: Maybe<Array<Scalars['Int']>>;
+  lt?: Maybe<Scalars['Int']>;
+  lte?: Maybe<Scalars['Int']>;
+  gt?: Maybe<Scalars['Int']>;
+  gte?: Maybe<Scalars['Int']>;
+  not?: Maybe<NestedIntFilter>;
+};
+
 export type NestedDateTimeFilter = {
   equals?: Maybe<Scalars['DateTime']>;
   in?: Maybe<Array<Scalars['DateTime']>>;
@@ -221,9 +304,44 @@ export type NestedDateTimeFilter = {
   not?: Maybe<NestedDateTimeFilter>;
 };
 
+export type AuthUpdateWithoutUserInput = {
+  id?: Maybe<StringFieldUpdateOperationsInput>;
+  refreshToken?: Maybe<StringFieldUpdateOperationsInput>;
+  tokenExpiry?: Maybe<IntFieldUpdateOperationsInput>;
+};
+
+export type AuthUpsertWithoutUserInput = {
+  update: AuthUpdateWithoutUserInput;
+  create: AuthCreateWithoutUserInput;
+};
+
+export type NestedIntFilter = {
+  equals?: Maybe<Scalars['Int']>;
+  in?: Maybe<Array<Scalars['Int']>>;
+  notIn?: Maybe<Array<Scalars['Int']>>;
+  lt?: Maybe<Scalars['Int']>;
+  lte?: Maybe<Scalars['Int']>;
+  gt?: Maybe<Scalars['Int']>;
+  gte?: Maybe<Scalars['Int']>;
+  not?: Maybe<NestedIntFilter>;
+};
+
+export type IntFieldUpdateOperationsInput = {
+  set?: Maybe<Scalars['Int']>;
+  increment?: Maybe<Scalars['Int']>;
+  decrement?: Maybe<Scalars['Int']>;
+  multiply?: Maybe<Scalars['Int']>;
+  divide?: Maybe<Scalars['Int']>;
+};
+
+export type AuthFragmentFragment = (
+  { __typename?: 'Auth' }
+  & Pick<Auth, 'id' | 'refreshToken' | 'tokenExpiry' | 'userId'>
+);
+
 export type UserFragmentFragment = (
   { __typename?: 'User' }
-  & Pick<User, 'id' | 'firstname' | 'lastname' | 'email' | 'password' | 'phone' | 'role' | 'createdAt' | 'updatedAt'>
+  & Pick<User, 'id' | 'firstname' | 'lastname' | 'email' | 'password' | 'phone' | 'createdAt' | 'updatedAt'>
 );
 
 export type LoginMutationVariables = Exact<{
@@ -247,10 +365,22 @@ export type AllUsersQuery = (
   { __typename?: 'Query' }
   & { allUsers?: Maybe<Array<Maybe<(
     { __typename?: 'User' }
+    & { auth?: Maybe<(
+      { __typename?: 'Auth' }
+      & AuthFragmentFragment
+    )> }
     & UserFragmentFragment
   )>>> }
 );
 
+export const AuthFragmentFragmentDoc = gql`
+    fragment AuthFragment on Auth {
+  id
+  refreshToken
+  tokenExpiry
+  userId
+}
+    `;
 export const UserFragmentFragmentDoc = gql`
     fragment UserFragment on User {
   id
@@ -259,7 +389,6 @@ export const UserFragmentFragmentDoc = gql`
   email
   password
   phone
-  role
   createdAt
   updatedAt
 }
@@ -301,9 +430,13 @@ export const AllUsersDocument = gql`
     query AllUsers {
   allUsers {
     ...UserFragment
+    auth {
+      ...AuthFragment
+    }
   }
 }
-    ${UserFragmentFragmentDoc}`;
+    ${UserFragmentFragmentDoc}
+${AuthFragmentFragmentDoc}`;
 
 /**
  * __useAllUsersQuery__

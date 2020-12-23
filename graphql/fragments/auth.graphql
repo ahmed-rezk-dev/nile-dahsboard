@@ -1,0 +1,6 @@
+fragment AuthFragment on Auth {
+    id
+    refreshToken
+    tokenExpiry
+    userId
+}

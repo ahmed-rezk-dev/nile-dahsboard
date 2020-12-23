@@ -19,6 +19,51 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  AuthCreateOneWithoutUserInput: { // input type
+    connect?: NexusGenInputs['AuthWhereUniqueInput'] | null; // AuthWhereUniqueInput
+    connectOrCreate?: NexusGenInputs['AuthCreateOrConnectWithoutuserInput'] | null; // AuthCreateOrConnectWithoutuserInput
+    create?: NexusGenInputs['AuthCreateWithoutUserInput'] | null; // AuthCreateWithoutUserInput
+  }
+  AuthCreateOrConnectWithoutuserInput: { // input type
+    create: NexusGenInputs['AuthCreateWithoutUserInput']; // AuthCreateWithoutUserInput!
+    where: NexusGenInputs['AuthWhereUniqueInput']; // AuthWhereUniqueInput!
+  }
+  AuthCreateWithoutUserInput: { // input type
+    id?: string | null; // String
+    refreshToken: string; // String!
+    tokenExpiry: number; // Int!
+  }
+  AuthUpdateOneWithoutUserInput: { // input type
+    connect?: NexusGenInputs['AuthWhereUniqueInput'] | null; // AuthWhereUniqueInput
+    connectOrCreate?: NexusGenInputs['AuthCreateOrConnectWithoutuserInput'] | null; // AuthCreateOrConnectWithoutuserInput
+    create?: NexusGenInputs['AuthCreateWithoutUserInput'] | null; // AuthCreateWithoutUserInput
+    delete?: boolean | null; // Boolean
+    disconnect?: boolean | null; // Boolean
+    update?: NexusGenInputs['AuthUpdateWithoutUserInput'] | null; // AuthUpdateWithoutUserInput
+    upsert?: NexusGenInputs['AuthUpsertWithoutUserInput'] | null; // AuthUpsertWithoutUserInput
+  }
+  AuthUpdateWithoutUserInput: { // input type
+    id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    refreshToken?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    tokenExpiry?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+  }
+  AuthUpsertWithoutUserInput: { // input type
+    create: NexusGenInputs['AuthCreateWithoutUserInput']; // AuthCreateWithoutUserInput!
+    update: NexusGenInputs['AuthUpdateWithoutUserInput']; // AuthUpdateWithoutUserInput!
+  }
+  AuthWhereInput: { // input type
+    AND?: NexusGenInputs['AuthWhereInput'][] | null; // [AuthWhereInput!]
+    id?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    NOT?: NexusGenInputs['AuthWhereInput'][] | null; // [AuthWhereInput!]
+    OR?: NexusGenInputs['AuthWhereInput'][] | null; // [AuthWhereInput!]
+    refreshToken?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    tokenExpiry?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    user?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
+    userId?: NexusGenInputs['StringFilter'] | null; // StringFilter
+  }
+  AuthWhereUniqueInput: { // input type
+    id?: string | null; // String
+  }
   DateTimeFieldUpdateOperationsInput: { // input type
     set?: NexusGenScalars['DateTime'] | null; // DateTime
   }
@@ -32,6 +77,23 @@ export interface NexusGenInputs {
     not?: NexusGenInputs['NestedDateTimeFilter'] | null; // NestedDateTimeFilter
     notIn?: NexusGenScalars['DateTime'][] | null; // [DateTime!]
   }
+  IntFieldUpdateOperationsInput: { // input type
+    decrement?: number | null; // Int
+    divide?: number | null; // Int
+    increment?: number | null; // Int
+    multiply?: number | null; // Int
+    set?: number | null; // Int
+  }
+  IntFilter: { // input type
+    equals?: number | null; // Int
+    gt?: number | null; // Int
+    gte?: number | null; // Int
+    in?: number[] | null; // [Int!]
+    lt?: number | null; // Int
+    lte?: number | null; // Int
+    not?: NexusGenInputs['NestedIntFilter'] | null; // NestedIntFilter
+    notIn?: number[] | null; // [Int!]
+  }
   NestedDateTimeFilter: { // input type
     equals?: NexusGenScalars['DateTime'] | null; // DateTime
     gt?: NexusGenScalars['DateTime'] | null; // DateTime
@@ -41,6 +103,16 @@ export interface NexusGenInputs {
     lte?: NexusGenScalars['DateTime'] | null; // DateTime
     not?: NexusGenInputs['NestedDateTimeFilter'] | null; // NestedDateTimeFilter
     notIn?: NexusGenScalars['DateTime'][] | null; // [DateTime!]
+  }
+  NestedIntFilter: { // input type
+    equals?: number | null; // Int
+    gt?: number | null; // Int
+    gte?: number | null; // Int
+    in?: number[] | null; // [Int!]
+    lt?: number | null; // Int
+    lte?: number | null; // Int
+    not?: NexusGenInputs['NestedIntFilter'] | null; // NestedIntFilter
+    notIn?: number[] | null; // [Int!]
   }
   NestedStringFilter: { // input type
     contains?: string | null; // String
@@ -73,6 +145,7 @@ export interface NexusGenInputs {
     startsWith?: string | null; // String
   }
   UserCreateInput: { // input type
+    auth?: NexusGenInputs['AuthCreateOneWithoutUserInput'] | null; // AuthCreateOneWithoutUserInput
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     email: string; // String!
     firstname: string; // String!
@@ -80,10 +153,11 @@ export interface NexusGenInputs {
     lastname: string; // String!
     password: string; // String!
     phone: string; // String!
-    role: string; // String!
+    role?: string | null; // String
     updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
   }
   UserUpdateInput: { // input type
+    auth?: NexusGenInputs['AuthUpdateOneWithoutUserInput'] | null; // AuthUpdateOneWithoutUserInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
     email?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     firstname?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
@@ -107,6 +181,7 @@ export interface NexusGenInputs {
   }
   UserWhereInput: { // input type
     AND?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
+    auth?: NexusGenInputs['AuthWhereInput'] | null; // AuthWhereInput
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     email?: NexusGenInputs['StringFilter'] | null; // StringFilter
     firstname?: NexusGenInputs['StringFilter'] | null; // StringFilter
@@ -138,6 +213,12 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  Auth: { // root type
+    id: string; // String!
+    refreshToken: string; // String!
+    tokenExpiry: number; // Int!
+    userId: string; // String!
+  }
   AuthPayload: { // root type
     token: string; // String!
     user?: NexusGenRootTypes['User'] | null; // User
@@ -171,6 +252,12 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
+  Auth: { // field return type
+    id: string; // String!
+    refreshToken: string; // String!
+    tokenExpiry: number; // Int!
+    userId: string; // String!
+  }
   AuthPayload: { // field return type
     token: string; // String!
     user: NexusGenRootTypes['User'] | null; // User
@@ -183,6 +270,9 @@ export interface NexusGenFieldTypes {
     deleteManyUser: NexusGenRootTypes['BatchPayload']; // BatchPayload!
     deleteOneUser: NexusGenRootTypes['User'] | null; // User
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
+    logout: string; // String!
+    refreshToken: string; // String!
+    refreshUserToken: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     updateManyUser: NexusGenRootTypes['BatchPayload']; // BatchPayload!
     updateOneUser: NexusGenRootTypes['User'] | null; // User
   }
@@ -192,6 +282,7 @@ export interface NexusGenFieldTypes {
     users: NexusGenRootTypes['User'][]; // [User!]!
   }
   User: { // field return type
+    auth: NexusGenRootTypes['Auth'] | null; // Auth
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     email: string; // String!
     firstname: string; // String!
@@ -205,6 +296,12 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenFieldTypeNames {
+  Auth: { // field return type name
+    id: 'String'
+    refreshToken: 'String'
+    tokenExpiry: 'Int'
+    userId: 'String'
+  }
   AuthPayload: { // field return type name
     token: 'String'
     user: 'User'
@@ -217,6 +314,9 @@ export interface NexusGenFieldTypeNames {
     deleteManyUser: 'BatchPayload'
     deleteOneUser: 'User'
     login: 'AuthPayload'
+    logout: 'String'
+    refreshToken: 'String'
+    refreshUserToken: 'AuthPayload'
     updateManyUser: 'BatchPayload'
     updateOneUser: 'User'
   }
@@ -226,6 +326,7 @@ export interface NexusGenFieldTypeNames {
     users: 'User'
   }
   User: { // field return type name
+    auth: 'Auth'
     createdAt: 'DateTime'
     email: 'String'
     firstname: 'String'
@@ -252,6 +353,15 @@ export interface NexusGenArgTypes {
     login: { // args
       email: string; // String!
       password: string; // String!
+    }
+    logout: { // args
+      userId: string; // String!
+    }
+    refreshToken: { // args
+      userId: string; // String!
+    }
+    refreshUserToken: { // args
+      userId: string; // String!
     }
     updateManyUser: { // args
       data: NexusGenInputs['UserUpdateManyMutationInput']; // UserUpdateManyMutationInput!

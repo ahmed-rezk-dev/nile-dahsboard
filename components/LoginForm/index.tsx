@@ -4,7 +4,7 @@
  *
  */
 import React from 'react';
-import { Form, Input, Button, Row, message } from 'antd';
+import { Form, Input, Button, Row } from 'antd';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import { FormCard, FormCardInfo, LoginFormButton } from '@styled/Login';
 import { CardHeader } from '@styled/Card';

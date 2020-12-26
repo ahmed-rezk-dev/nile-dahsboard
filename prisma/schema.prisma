@@ -26,7 +26,7 @@ model User {
 model Auth {
   id String @default(uuid()) @id
   refreshToken String @map("refresh_token")
-  tokenExpiry Int @map("token_expiry")
+  tokenExpiry Int @map("token_expiry") @default(0)
   user User @relation(fields: [userId], references: [id])
   userId String @map("user_id")
 }

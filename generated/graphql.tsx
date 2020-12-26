@@ -251,7 +251,7 @@ export type AuthUpdateOneWithoutUserInput = {
 export type AuthCreateWithoutUserInput = {
   id?: Maybe<Scalars['String']>;
   refreshToken: Scalars['String'];
-  tokenExpiry: Scalars['Int'];
+  tokenExpiry?: Maybe<Scalars['Int']>;
 };
 
 export type AuthWhereUniqueInput = {

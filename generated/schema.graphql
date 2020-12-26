@@ -23,7 +23,7 @@ input AuthCreateOrConnectWithoutuserInput {
 input AuthCreateWithoutUserInput {
   id: String
   refreshToken: String!
-  tokenExpiry: Int!
+  tokenExpiry: Int
 }
 
 type AuthPayload {
@@ -112,9 +112,8 @@ type Mutation {
   deleteManyUser(where: UserWhereInput): BatchPayload!
   deleteOneUser(where: UserWhereUniqueInput!): User
   login(email: String!, password: String!): AuthPayload!
-  logout(userId: String!): String!
-  refreshToken(userId: String!): String!
-  refreshUserToken(userId: String!): AuthPayload!
+  logout(userId: String!): Boolean!
+  refreshToken(userId: String!): AuthPayload!
   updateManyUser(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   updateOneUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
 }

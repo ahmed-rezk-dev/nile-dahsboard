@@ -31,7 +31,7 @@ export interface NexusGenInputs {
   AuthCreateWithoutUserInput: { // input type
     id?: string | null; // String
     refreshToken: string; // String!
-    tokenExpiry: number; // Int!
+    tokenExpiry?: number | null; // Int
   }
   AuthUpdateOneWithoutUserInput: { // input type
     connect?: NexusGenInputs['AuthWhereUniqueInput'] | null; // AuthWhereUniqueInput
@@ -270,9 +270,8 @@ export interface NexusGenFieldTypes {
     deleteManyUser: NexusGenRootTypes['BatchPayload']; // BatchPayload!
     deleteOneUser: NexusGenRootTypes['User'] | null; // User
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
-    logout: string; // String!
-    refreshToken: string; // String!
-    refreshUserToken: NexusGenRootTypes['AuthPayload']; // AuthPayload!
+    logout: boolean; // Boolean!
+    refreshToken: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     updateManyUser: NexusGenRootTypes['BatchPayload']; // BatchPayload!
     updateOneUser: NexusGenRootTypes['User'] | null; // User
   }
@@ -314,9 +313,8 @@ export interface NexusGenFieldTypeNames {
     deleteManyUser: 'BatchPayload'
     deleteOneUser: 'User'
     login: 'AuthPayload'
-    logout: 'String'
-    refreshToken: 'String'
-    refreshUserToken: 'AuthPayload'
+    logout: 'Boolean'
+    refreshToken: 'AuthPayload'
     updateManyUser: 'BatchPayload'
     updateOneUser: 'User'
   }
@@ -358,9 +356,6 @@ export interface NexusGenArgTypes {
       userId: string; // String!
     }
     refreshToken: { // args
-      userId: string; // String!
-    }
-    refreshUserToken: { // args
       userId: string; // String!
     }
     updateManyUser: { // args

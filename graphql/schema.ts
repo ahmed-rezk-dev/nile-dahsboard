@@ -1,8 +1,8 @@
 import { objectType, queryType, mutationType, makeSchema, stringArg, nonNull } from '@nexus/schema';
 import { nexusPrisma } from 'nexus-plugin-prisma';
 import path from 'path';
-import { compare, compareSync } from 'bcryptjs';
-import { Decode, decodeToken, generateAccessToken, generateRefreshToken } from 'utils/generateToken';
+import { compareSync } from 'bcryptjs';
+import { generateAccessToken, generateRefreshToken } from 'utils/generateToken';
 import { BASE_URL, REFRESH_TOKEN_EXPIRES } from 'utils/config';
 
 const User = objectType({
@@ -40,15 +40,6 @@ export const AuthPayload = objectType({
         });
     },
 });
-
-const REFRESH_TOKEN_COOKIE_OPTIONS: any = {
-    // Get part after // and before : (in case port number in URL)
-    domain: BASE_URL.split('//')[1].split(':')[0],
-    httpOnly: true,
-    path: '/',
-    sameSite: true,
-    secure: !!BASE_URL.includes('https'),
-};
 
 const baseUrl = BASE_URL.split('//')[1].split(':')[0];
 const secure = !!BASE_URL.includes('https') ? 'secure' : '';
@@ -126,9 +117,6 @@ const Mutation = mutationType({
 
                 let isRefreshTokenValid = false;
                 const { auth } = foundUser;
-                console.log('auth:', auth);
-                const dateNow = Date.now();
-                console.log('dateNow:', dateNow);
 
                 isRefreshTokenValid = auth?.refreshToken === refreshToken;
                 const isRefreshTokenExpiryValid = Number(auth?.tokenExpiry)! > Date.now();

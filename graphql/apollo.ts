@@ -1,13 +1,6 @@
 import { IncomingMessage, ServerResponse } from 'http';
 import { useMemo } from 'react';
-import {
-    ApolloClient,
-    ApolloLink,
-    createHttpLink,
-    HttpLink,
-    InMemoryCache,
-    NormalizedCacheObject,
-} from '@apollo/client';
+import { ApolloClient, ApolloLink, createHttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 import { message as antMessage } from 'antd';
 import { isBrowser } from 'utils/isBrowser';
@@ -35,20 +28,6 @@ const link = createHttpLink({
     uri: 'api/graphql',
     credentials: 'include',
 });
-
-// function createIsomorphLink(context: ResolverContext = {}) {
-//     if (typeof window === 'undefined') {
-//         const { SchemaLink } = require('@apollo/client/link/schema');
-//         const { schema } = require('./schema');
-//         return new SchemaLink({ schema, context });
-//     } else {
-//         const { HttpLink } = require('@apollo/client');
-//         return new HttpLink({
-//             uri: '/api/graphql',
-//             credentials: 'include',
-//         });
-//     }
-// }
 
 const authLink = setContext((_, { headers }) => {
     console.log('🚀 ~ file: apollo.ts ~ line 64 ~ authLink ~ headers ', _);

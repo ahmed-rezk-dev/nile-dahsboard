@@ -5,7 +5,7 @@
 type Auth {
   id: String!
   refreshToken: String!
-  tokenExpiry: Int!
+  tokenExpiry: String!
   userId: String!
 }
 
@@ -23,7 +23,7 @@ input AuthCreateOrConnectWithoutuserInput {
 input AuthCreateWithoutUserInput {
   id: String
   refreshToken: String!
-  tokenExpiry: Int
+  tokenExpiry: String!
 }
 
 type AuthPayload {
@@ -44,7 +44,7 @@ input AuthUpdateOneWithoutUserInput {
 input AuthUpdateWithoutUserInput {
   id: StringFieldUpdateOperationsInput
   refreshToken: StringFieldUpdateOperationsInput
-  tokenExpiry: IntFieldUpdateOperationsInput
+  tokenExpiry: StringFieldUpdateOperationsInput
 }
 
 input AuthUpsertWithoutUserInput {
@@ -58,7 +58,7 @@ input AuthWhereInput {
   NOT: [AuthWhereInput!]
   OR: [AuthWhereInput!]
   refreshToken: StringFilter
-  tokenExpiry: IntFilter
+  tokenExpiry: StringFilter
   user: UserWhereInput
   userId: StringFilter
 }
@@ -88,25 +88,6 @@ input DateTimeFilter {
   notIn: [DateTime!]
 }
 
-input IntFieldUpdateOperationsInput {
-  decrement: Int
-  divide: Int
-  increment: Int
-  multiply: Int
-  set: Int
-}
-
-input IntFilter {
-  equals: Int
-  gt: Int
-  gte: Int
-  in: [Int!]
-  lt: Int
-  lte: Int
-  not: NestedIntFilter
-  notIn: [Int!]
-}
-
 type Mutation {
   createOneUser(data: UserCreateInput!): User!
   deleteManyUser(where: UserWhereInput): BatchPayload!
@@ -127,17 +108,6 @@ input NestedDateTimeFilter {
   lte: DateTime
   not: NestedDateTimeFilter
   notIn: [DateTime!]
-}
-
-input NestedIntFilter {
-  equals: Int
-  gt: Int
-  gte: Int
-  in: [Int!]
-  lt: Int
-  lte: Int
-  not: NestedIntFilter
-  notIn: [Int!]
 }
 
 input NestedStringFilter {

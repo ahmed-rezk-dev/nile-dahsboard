@@ -32,7 +32,7 @@ export type Auth = {
   __typename?: 'Auth';
   id: Scalars['String'];
   refreshToken: Scalars['String'];
-  tokenExpiry: Scalars['Int'];
+  tokenExpiry: Scalars['String'];
   userId: Scalars['String'];
 };
 
@@ -70,9 +70,8 @@ export type Mutation = {
   updateOneUser?: Maybe<User>;
   updateManyUser: BatchPayload;
   login: AuthPayload;
-  refreshUserToken: AuthPayload;
-  refreshToken: Scalars['String'];
-  logout: Scalars['String'];
+  refreshToken: AuthPayload;
+  logout: Scalars['Boolean'];
 };
 
 
@@ -106,11 +105,6 @@ export type MutationUpdateManyUserArgs = {
 export type MutationLoginArgs = {
   email: Scalars['String'];
   password: Scalars['String'];
-};
-
-
-export type MutationRefreshUserTokenArgs = {
-  userId: Scalars['String'];
 };
 
 
@@ -214,7 +208,7 @@ export type AuthWhereInput = {
   NOT?: Maybe<Array<AuthWhereInput>>;
   id?: Maybe<StringFilter>;
   refreshToken?: Maybe<StringFilter>;
-  tokenExpiry?: Maybe<IntFilter>;
+  tokenExpiry?: Maybe<StringFilter>;
   user?: Maybe<UserWhereInput>;
   userId?: Maybe<StringFilter>;
 };
@@ -251,7 +245,7 @@ export type AuthUpdateOneWithoutUserInput = {
 export type AuthCreateWithoutUserInput = {
   id?: Maybe<Scalars['String']>;
   refreshToken: Scalars['String'];
-  tokenExpiry?: Maybe<Scalars['Int']>;
+  tokenExpiry: Scalars['String'];
 };
 
 export type AuthWhereUniqueInput = {
@@ -282,17 +276,6 @@ export type NestedStringFilter = {
   not?: Maybe<NestedStringFilter>;
 };
 
-export type IntFilter = {
-  equals?: Maybe<Scalars['Int']>;
-  in?: Maybe<Array<Scalars['Int']>>;
-  notIn?: Maybe<Array<Scalars['Int']>>;
-  lt?: Maybe<Scalars['Int']>;
-  lte?: Maybe<Scalars['Int']>;
-  gt?: Maybe<Scalars['Int']>;
-  gte?: Maybe<Scalars['Int']>;
-  not?: Maybe<NestedIntFilter>;
-};
-
 export type NestedDateTimeFilter = {
   equals?: Maybe<Scalars['DateTime']>;
   in?: Maybe<Array<Scalars['DateTime']>>;
@@ -307,31 +290,12 @@ export type NestedDateTimeFilter = {
 export type AuthUpdateWithoutUserInput = {
   id?: Maybe<StringFieldUpdateOperationsInput>;
   refreshToken?: Maybe<StringFieldUpdateOperationsInput>;
-  tokenExpiry?: Maybe<IntFieldUpdateOperationsInput>;
+  tokenExpiry?: Maybe<StringFieldUpdateOperationsInput>;
 };
 
 export type AuthUpsertWithoutUserInput = {
   update: AuthUpdateWithoutUserInput;
   create: AuthCreateWithoutUserInput;
-};
-
-export type NestedIntFilter = {
-  equals?: Maybe<Scalars['Int']>;
-  in?: Maybe<Array<Scalars['Int']>>;
-  notIn?: Maybe<Array<Scalars['Int']>>;
-  lt?: Maybe<Scalars['Int']>;
-  lte?: Maybe<Scalars['Int']>;
-  gt?: Maybe<Scalars['Int']>;
-  gte?: Maybe<Scalars['Int']>;
-  not?: Maybe<NestedIntFilter>;
-};
-
-export type IntFieldUpdateOperationsInput = {
-  set?: Maybe<Scalars['Int']>;
-  increment?: Maybe<Scalars['Int']>;
-  decrement?: Maybe<Scalars['Int']>;
-  multiply?: Maybe<Scalars['Int']>;
-  divide?: Maybe<Scalars['Int']>;
 };
 
 export type AuthFragmentFragment = (

@@ -1,7 +1,7 @@
 import { objectType, queryType, mutationType, makeSchema, stringArg, nonNull } from '@nexus/schema';
 import { nexusPrisma } from 'nexus-plugin-prisma';
 import path from 'path';
-import { compare, compareSync } from 'bcrypt';
+import { compare, compareSync } from 'bcryptjs';
 import { Decode, decodeToken, generateAccessToken, generateRefreshToken } from 'utils/generateToken';
 import { BASE_URL, REFRESH_TOKEN_EXPIRES } from 'utils/config';
 
@@ -89,23 +89,24 @@ const Mutation = mutationType({
                 }
 
                 // 2- Check if password is correct
-                const isPasswordMatch = await compare(password, user.password);
+                const isPasswordMatch = compareSync(password, user.password);
                 if (!isPasswordMatch) {
                     throw new Error('Password not correct!');
                 }
 
                 // 3- Generate token if email/password are correct
                 const token = generateAccessToken(user);
-                const refreshToken = generateRefreshToken();
-                const refreshTokenDecode = decodeToken(refreshToken) as Decode;
+                const refreshToken = await generateRefreshToken();
 
                 res?.setHeader('set-cookie', [
-                    `refreshToken=${refreshToken};Max-Age=${REFRESH_TOKEN_EXPIRES};${setCookieHeaderOptions}`,
+                    `refreshToken=${refreshToken.token};Max-Age=${REFRESH_TOKEN_EXPIRES};${setCookieHeaderOptions}`,
                 ]);
 
                 await prisma.user.update({
                     where: { id: user.id },
-                    data: { auth: { update: { refreshToken, tokenExpiry: refreshTokenDecode.exp } } },
+                    data: {
+                        auth: { update: { refreshToken: refreshToken.token, tokenExpiry: refreshToken.exp } },
+                    },
                 });
 
                 return { token, user };
@@ -125,25 +126,34 @@ const Mutation = mutationType({
 
                 let isRefreshTokenValid = false;
                 const { auth } = foundUser;
+                console.log('auth:', auth);
+                const dateNow = Date.now();
+                console.log('dateNow:', dateNow);
 
-                isRefreshTokenValid = compareSync(refreshToken, auth?.refreshToken!) ? true : false;
-                const isRefreshTokenExpiryValid = auth?.tokenExpiry! > Date.now();
+                isRefreshTokenValid = auth?.refreshToken === refreshToken;
+                const isRefreshTokenExpiryValid = Number(auth?.tokenExpiry)! > Date.now();
 
                 if (isRefreshTokenValid && isRefreshTokenExpiryValid) isRefreshTokenValid = true;
                 if (!isRefreshTokenValid) throw new Error('Invalid refresh token');
 
                 // 3- Generate new tokens
                 const token = generateAccessToken(foundUser);
-                const newRefreshToken = generateRefreshToken();
-                const refreshTokenDecode = decodeToken(newRefreshToken) as Decode;
+                const newRefreshToken = await generateRefreshToken();
 
                 res?.setHeader('set-cookie', [
-                    `refreshToken=${newRefreshToken};Max-Age=${REFRESH_TOKEN_EXPIRES};${setCookieHeaderOptions}`,
+                    `refreshToken=${newRefreshToken.token};Max-Age=${REFRESH_TOKEN_EXPIRES};${setCookieHeaderOptions}`,
                 ]);
 
                 await prisma.user.update({
                     where: { id: userId },
-                    data: { auth: { update: { refreshToken, tokenExpiry: refreshTokenDecode.exp } } },
+                    data: {
+                        auth: {
+                            update: {
+                                refreshToken: newRefreshToken.token,
+                                tokenExpiry: newRefreshToken.exp,
+                            },
+                        },
+                    },
                 });
 
                 return { token, user: foundUser };

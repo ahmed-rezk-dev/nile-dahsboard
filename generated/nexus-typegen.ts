@@ -31,7 +31,7 @@ export interface NexusGenInputs {
   AuthCreateWithoutUserInput: { // input type
     id?: string | null; // String
     refreshToken: string; // String!
-    tokenExpiry?: number | null; // Int
+    tokenExpiry: string; // String!
   }
   AuthUpdateOneWithoutUserInput: { // input type
     connect?: NexusGenInputs['AuthWhereUniqueInput'] | null; // AuthWhereUniqueInput
@@ -45,7 +45,7 @@ export interface NexusGenInputs {
   AuthUpdateWithoutUserInput: { // input type
     id?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     refreshToken?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
-    tokenExpiry?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    tokenExpiry?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
   }
   AuthUpsertWithoutUserInput: { // input type
     create: NexusGenInputs['AuthCreateWithoutUserInput']; // AuthCreateWithoutUserInput!
@@ -57,7 +57,7 @@ export interface NexusGenInputs {
     NOT?: NexusGenInputs['AuthWhereInput'][] | null; // [AuthWhereInput!]
     OR?: NexusGenInputs['AuthWhereInput'][] | null; // [AuthWhereInput!]
     refreshToken?: NexusGenInputs['StringFilter'] | null; // StringFilter
-    tokenExpiry?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    tokenExpiry?: NexusGenInputs['StringFilter'] | null; // StringFilter
     user?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
     userId?: NexusGenInputs['StringFilter'] | null; // StringFilter
   }
@@ -77,23 +77,6 @@ export interface NexusGenInputs {
     not?: NexusGenInputs['NestedDateTimeFilter'] | null; // NestedDateTimeFilter
     notIn?: NexusGenScalars['DateTime'][] | null; // [DateTime!]
   }
-  IntFieldUpdateOperationsInput: { // input type
-    decrement?: number | null; // Int
-    divide?: number | null; // Int
-    increment?: number | null; // Int
-    multiply?: number | null; // Int
-    set?: number | null; // Int
-  }
-  IntFilter: { // input type
-    equals?: number | null; // Int
-    gt?: number | null; // Int
-    gte?: number | null; // Int
-    in?: number[] | null; // [Int!]
-    lt?: number | null; // Int
-    lte?: number | null; // Int
-    not?: NexusGenInputs['NestedIntFilter'] | null; // NestedIntFilter
-    notIn?: number[] | null; // [Int!]
-  }
   NestedDateTimeFilter: { // input type
     equals?: NexusGenScalars['DateTime'] | null; // DateTime
     gt?: NexusGenScalars['DateTime'] | null; // DateTime
@@ -103,16 +86,6 @@ export interface NexusGenInputs {
     lte?: NexusGenScalars['DateTime'] | null; // DateTime
     not?: NexusGenInputs['NestedDateTimeFilter'] | null; // NestedDateTimeFilter
     notIn?: NexusGenScalars['DateTime'][] | null; // [DateTime!]
-  }
-  NestedIntFilter: { // input type
-    equals?: number | null; // Int
-    gt?: number | null; // Int
-    gte?: number | null; // Int
-    in?: number[] | null; // [Int!]
-    lt?: number | null; // Int
-    lte?: number | null; // Int
-    not?: NexusGenInputs['NestedIntFilter'] | null; // NestedIntFilter
-    notIn?: number[] | null; // [Int!]
   }
   NestedStringFilter: { // input type
     contains?: string | null; // String
@@ -216,7 +189,7 @@ export interface NexusGenObjects {
   Auth: { // root type
     id: string; // String!
     refreshToken: string; // String!
-    tokenExpiry: number; // Int!
+    tokenExpiry: string; // String!
     userId: string; // String!
   }
   AuthPayload: { // root type
@@ -255,7 +228,7 @@ export interface NexusGenFieldTypes {
   Auth: { // field return type
     id: string; // String!
     refreshToken: string; // String!
-    tokenExpiry: number; // Int!
+    tokenExpiry: string; // String!
     userId: string; // String!
   }
   AuthPayload: { // field return type
@@ -298,7 +271,7 @@ export interface NexusGenFieldTypeNames {
   Auth: { // field return type name
     id: 'String'
     refreshToken: 'String'
-    tokenExpiry: 'Int'
+    tokenExpiry: 'String'
     userId: 'String'
   }
   AuthPayload: { // field return type name

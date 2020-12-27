@@ -13,6 +13,11 @@ export type ResolverContext = {
     res?: ServerResponse;
 };
 
+let auth = {
+    token: undefined,
+    userId: undefined,
+};
+
 const linkError = onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors)
         graphQLErrors.map(({ message, locations, path }) => {
@@ -30,9 +35,8 @@ const link = createHttpLink({
 });
 
 const authLink = setContext((_, { headers }) => {
-    console.log('🚀 ~ file: apollo.ts ~ line 64 ~ authLink ~ headers ', _);
     // get the authentication token from local storage if it exists
-    const token = localStorage.getItem('token');
+    const { token } = auth;
     // return the headers to the context so httpLink can read them
     return {
         headers: {
@@ -42,7 +46,7 @@ const authLink = setContext((_, { headers }) => {
     };
 });
 
-function createApolloClient(context?: ResolverContext) {
+function createApolloClient(_context?: ResolverContext, _initialState?: any) {
     return new ApolloClient({
         ssrMode: typeof window === 'undefined',
         link: ApolloLink.from([linkError, authLink, link]),
@@ -56,7 +60,7 @@ export function initializeApollo(
     // a custom context which will be used by `SchemaLink` to server render pages
     context?: ResolverContext
 ) {
-    const _apolloClient = apolloClient ?? createApolloClient(context);
+    const _apolloClient = apolloClient ?? createApolloClient(context, initialState);
 
     // If your page has Next.js data fetching methods that use Apollo Client, the initial state
     // get hydrated here
@@ -72,6 +76,8 @@ export function initializeApollo(
 }
 
 export function useApollo(initialState: any) {
+    console.log('🛎 initialState: => ', initialState);
+    auth = { ...initialState.auth };
     const store = useMemo(() => initializeApollo(initialState), [initialState]);
     return store;
 }

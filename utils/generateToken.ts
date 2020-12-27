@@ -1,4 +1,3 @@
-import { genSalt, hash } from 'bcryptjs';
 import { User } from 'generated/graphql';
 import { decode, sign } from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';

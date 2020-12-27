@@ -1,7 +1,7 @@
 import { objectType, queryType, mutationType, makeSchema, stringArg, nonNull } from '@nexus/schema';
 import { nexusPrisma } from 'nexus-plugin-prisma';
 import path from 'path';
-import { compareSync } from 'bcryptjs';
+import { compareSync } from 'bcrypt';
 import { generateAccessToken, generateRefreshToken } from 'utils/generateToken';
 import { BASE_URL, REFRESH_TOKEN_EXPIRES } from 'utils/config';
 

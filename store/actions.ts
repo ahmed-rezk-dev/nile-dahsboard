@@ -1,5 +1,6 @@
-import { Constants } from './constants';
+import { AuthConstants, Constants } from './constants';
 import { SidebarType } from '@/components/Sidebar/sidebar.type';
+import { AuthType } from 'interfaces';
 
 type ActionMap<M extends { [index: string]: any }> = {
     [Key in keyof M]: M[Key] extends undefined
@@ -47,5 +48,18 @@ export const MenuToggleAction = (payload: SidebarType): MenuToggleActionType => 
     };
 };
 
+// Auth
+
+type AuthPayload = {
+    [Constants.SetAuth]: AuthType;
+};
+export type AuthActionType = ActionMap<AuthPayload>[keyof ActionMap<AuthPayload>];
+export const setAuthAction = (payload: AuthType): AuthActionType => {
+    return {
+        type: Constants.SetAuth,
+        payload,
+    };
+};
+
 // Action types
-export type ActionsType = ProductActions | ShoppingCartActions | MenuToggleActionType;
+export type ActionsType = ProductActions | ShoppingCartActions | MenuToggleActionType | AuthActionType;

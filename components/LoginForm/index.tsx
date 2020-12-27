@@ -3,13 +3,16 @@
  * LoginForm
  *
  */
-import React from 'react';
+import React, { useContext } from 'react';
 import { Form, Input, Button, Row } from 'antd';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import { FormCard, FormCardInfo, LoginFormButton } from '@styled/Login';
 import { CardHeader } from '@styled/Card';
 import { useRouter } from 'next/router';
 import { useLoginMutation } from 'generated/graphql';
+import { AppContext } from 'store/context';
+import { setAuthAction } from 'store/actions';
+import { useApollo } from 'graphql/apollo';
 
 interface Props {
     changeFormHandler: Function;
@@ -22,11 +25,15 @@ interface FormValues {
 
 const LoginForm: React.FC<Props> = ({ changeFormHandler }) => {
     const router = useRouter();
+    const { dispatch } = useContext(AppContext);
     const [login, { loading }] = useLoginMutation();
 
     const handleSubmitForm = async (values: FormValues) => {
         try {
-            await login({ variables: values });
+            const { data } = await login({ variables: values });
+            const payload = { token: data?.login.token, userId: data?.login.user?.id };
+            dispatch(setAuthAction(payload));
+            useApollo({ auth: payload });
             router.push('/');
         } catch (error) {}
     };

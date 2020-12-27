@@ -1,6 +1,7 @@
-import { Constants } from './constants';
+import { AuthConstants, Constants } from './constants';
 import { SidebarType } from '@/components/Sidebar/sidebar.type';
 import { ActionsType } from './actions';
+import { AuthType } from 'interfaces';
 
 // Product
 
@@ -42,11 +43,22 @@ export const sidebarReducer = (state: SidebarType, action: ActionsType): Sidebar
         case Constants.MenuToggle:
             return { ...state, toggle: action.payload.toggle };
         default: {
-            return exhaustiveCheck(state);
+            return state;
         }
     }
 };
 
-const exhaustiveCheck = (type: never | SidebarType): never => {
+export const authReducer = (state: AuthType, action: ActionsType): AuthType => {
+    switch (action.type) {
+        case Constants.SetAuth:
+            return { ...state, ...action.payload };
+        default: {
+            return state;
+        }
+    }
+};
+
+// Checking types not included
+const exhaustiveCheck = (type: never | SidebarType | AuthType): never => {
     throw new Error(`Missing type ${type}`);
 };

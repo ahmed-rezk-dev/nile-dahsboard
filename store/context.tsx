@@ -1,12 +1,13 @@
 import React, { createContext, useReducer, Dispatch } from 'react';
 import { ActionsType } from './actions';
 import { AppState } from './app.state';
-import { productReducer, shoppingCartReducer, sidebarReducer } from './reducers';
+import { authReducer, productReducer, shoppingCartReducer, sidebarReducer } from './reducers';
 
 const initialState: AppState = {
     products: [],
     shoppingCart: 0,
     sidebar: { toggle: false },
+    auth: { token: undefined, userId: undefined },
 };
 
 const AppContext = createContext<{
@@ -17,10 +18,11 @@ const AppContext = createContext<{
     dispatch: () => null,
 });
 
-const mainReducer = ({ products, shoppingCart, sidebar }: AppState, action: ActionsType) => ({
+const mainReducer = ({ products, shoppingCart, sidebar, auth }: AppState, action: ActionsType) => ({
     products: productReducer(products, action),
     shoppingCart: shoppingCartReducer(shoppingCart, action),
     sidebar: sidebarReducer(sidebar, action),
+    auth: authReducer(auth, action),
 });
 
 const AppProvider: React.FC = ({ children }) => {

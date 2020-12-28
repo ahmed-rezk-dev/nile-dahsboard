@@ -1,7 +1,6 @@
 import { User } from 'generated/graphql';
 import { decode, sign } from 'jsonwebtoken';
-import { v4 as uuidv4 } from 'uuid';
-import { ACCESS_TOKEN_EXPIRES, ACCESS_TOKEN_SECRET, REFRESH_TOKEN_EXPIRES } from './config';
+import { ACCESS_TOKEN_EXPIRES, ACCESS_TOKEN_SECRET, REFRESH_TOKEN_EXPIRES, REFRESH_TOKEN_SECRET } from './config';
 
 export interface Decode {
     userId: string | undefined;
@@ -15,22 +14,17 @@ export interface RefreshToken {
 }
 
 export const generateAccessToken = (user: User) => {
-    const token = sign({ userId: user.id }, ACCESS_TOKEN_SECRET, {
-        expiresIn: parseInt(ACCESS_TOKEN_EXPIRES as string),
+    const token = sign(user, ACCESS_TOKEN_SECRET, {
+        expiresIn: ACCESS_TOKEN_EXPIRES,
     });
     return token;
 };
 
-export const generateRefreshToken = async (): Promise<RefreshToken> => {
-    const token = uuidv4();
-    const toMilliseconds = (REFRESH_TOKEN_EXPIRES as number) * 1000;
-    const exp = new Date(Date.now() + toMilliseconds).getTime().toString();
-    console.log('🛎 exp: => ', exp);
-
-    // const salt = await genSalt(10);
-    // const token = await hash(refreshToken, salt);
-
-    return { token, exp };
+export const generateRefreshToken = (user: User) => {
+    const token = sign({ userId: user.id }, REFRESH_TOKEN_SECRET, {
+        expiresIn: parseInt(REFRESH_TOKEN_EXPIRES as string),
+    });
+    return token;
 };
 
 export const decodeToken = (token: string) => {

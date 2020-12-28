@@ -12,8 +12,6 @@ export interface ReqRes {
 }
 export interface Context extends ReqRes {
     prisma: PrismaClient;
-    setCookies: any;
-    setHeaders: any;
     user?: User;
 }
 
@@ -21,14 +19,10 @@ export function createContext({ req, res }: ReqRes): Context {
     // Header is in form 'Bearer <token>', grabbing the part after ' '
     const token = req?.headers.authorization?.split(' ')[1] || '';
 
-    // Initialize as empty arrays - resolvers will add items if required
-    const setCookies: any = [];
-    const setHeaders: any = [];
-
     try {
-        const { user }: any = verify(token, ACCESS_TOKEN_SECRET);
-        return { req, res, setCookies, setHeaders, user, prisma };
+        const verifyToken: any = verify(token, ACCESS_TOKEN_SECRET);
+        return { req, res, user: verifyToken, prisma };
     } catch (error) {
-        return { setCookies, setHeaders, req, res, prisma };
+        return { req, res, prisma };
     }
 }

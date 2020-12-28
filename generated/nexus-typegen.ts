@@ -250,7 +250,7 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     allUsers: Array<NexusGenRootTypes['User'] | null> | null; // [User]
-    user: NexusGenRootTypes['User'] | null; // User
+    user: NexusGenRootTypes['User']; // User!
     users: NexusGenRootTypes['User'][]; // [User!]!
   }
   User: { // field return type
@@ -328,9 +328,6 @@ export interface NexusGenArgTypes {
     logout: { // args
       userId: string; // String!
     }
-    refreshToken: { // args
-      userId: string; // String!
-    }
     updateManyUser: { // args
       data: NexusGenInputs['UserUpdateManyMutationInput']; // UserUpdateManyMutationInput!
       where?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
@@ -341,9 +338,6 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
-    user: { // args
-      where: NexusGenInputs['UserWhereUniqueInput']; // UserWhereUniqueInput!
-    }
     users: { // args
       after?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
       before?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput

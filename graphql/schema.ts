@@ -2,8 +2,9 @@ import { objectType, queryType, mutationType, makeSchema, stringArg, nonNull } f
 import { nexusPrisma } from 'nexus-plugin-prisma';
 import path from 'path';
 import { compareSync } from 'bcrypt';
-import { generateAccessToken, generateRefreshToken } from 'utils/generateToken';
-import { BASE_URL, REFRESH_TOKEN_EXPIRES } from 'utils/config';
+import { Decode, decodeToken, generateAccessToken, generateRefreshToken } from 'utils/generateToken';
+import { BASE_URL, REFRESH_TOKEN_EXPIRES, REFRESH_TOKEN_SECRET } from 'utils/config';
+import { verify } from 'jsonwebtoken';
 
 const User = objectType({
     name: 'User',
@@ -57,6 +58,15 @@ const Query = queryType({
 
         t.crud.user();
         t.crud.users();
+
+        // Current user
+        t.nonNull.field('user', {
+            type: 'User',
+            resolve: async (_p, _a, { user }) => {
+                if (!user) throw new Error('Not authenticated');
+                return user;
+            },
+        });
     },
 });
 
@@ -87,16 +97,19 @@ const Mutation = mutationType({
 
                 // 3- Generate token if email/password are correct
                 const token = generateAccessToken(user);
-                const refreshToken = await generateRefreshToken();
+                const refreshToken = generateRefreshToken(user);
+                const refreshTokenDecode = decodeToken(refreshToken) as Decode;
 
                 res?.setHeader('set-cookie', [
-                    `refreshToken=${refreshToken.token};Max-Age=${REFRESH_TOKEN_EXPIRES};${setCookieHeaderOptions}`,
+                    `refreshToken=${refreshToken};Max-Age=${REFRESH_TOKEN_EXPIRES};${setCookieHeaderOptions}`,
                 ]);
 
                 await prisma.user.update({
                     where: { id: user.id },
                     data: {
-                        auth: { update: { refreshToken: refreshToken.token, tokenExpiry: refreshToken.exp } },
+                        auth: {
+                            update: { refreshToken: refreshToken, tokenExpiry: refreshTokenDecode.exp.toString() },
+                        },
                     },
                 });
 
@@ -107,44 +120,51 @@ const Mutation = mutationType({
         // Refresh token
         t.nonNull.field('refreshToken', {
             type: 'AuthPayload',
-            args: { userId: nonNull(stringArg()) },
-            resolve: async (_parent, { userId }, { req, res, prisma }) => {
+            // args: { userId: nonNull(stringArg()) },
+            resolve: async (_parent, _args, { req, res, prisma }) => {
                 const { refreshToken } = req.cookies;
                 if (!refreshToken) throw new Error('No refresh token provided');
 
-                const foundUser = await prisma.user.findFirst({ where: { id: userId }, include: { auth: true } });
-                if (!foundUser) throw new Error('Invalid user');
+                try {
+                    const { userId } = verify(refreshToken, REFRESH_TOKEN_SECRET) as Decode;
 
-                let isRefreshTokenValid = false;
-                const { auth } = foundUser;
+                    const foundUser = await prisma.user.findFirst({ where: { id: userId }, include: { auth: true } });
+                    if (!foundUser) throw new Error('Invalid user');
 
-                isRefreshTokenValid = auth?.refreshToken === refreshToken;
-                const isRefreshTokenExpiryValid = Number(auth?.tokenExpiry)! > Date.now();
+                    // let isRefreshTokenValid = false;
+                    // const { auth } = foundUser;
 
-                if (isRefreshTokenValid && isRefreshTokenExpiryValid) isRefreshTokenValid = true;
-                if (!isRefreshTokenValid) throw new Error('Invalid refresh token');
+                    // isRefreshTokenValid = auth?.refreshToken === refreshToken;
+                    // const isRefreshTokenExpiryValid = Number(auth?.tokenExpiry)! > Date.now();
 
-                // 3- Generate new tokens
-                const token = generateAccessToken(foundUser);
-                const newRefreshToken = await generateRefreshToken();
+                    // if (isRefreshTokenValid && isRefreshTokenExpiryValid) isRefreshTokenValid = true;
+                    // if (!isRefreshTokenValid) throw new Error('Invalid refresh token');
 
-                res?.setHeader('set-cookie', [
-                    `refreshToken=${newRefreshToken.token};Max-Age=${REFRESH_TOKEN_EXPIRES};${setCookieHeaderOptions}`,
-                ]);
+                    // 3- Generate new tokens
+                    const token = generateAccessToken(foundUser);
+                    const newRefreshToken = generateRefreshToken(foundUser);
+                    const refreshTokenDecode = decodeToken(newRefreshToken) as Decode;
 
-                await prisma.user.update({
-                    where: { id: userId },
-                    data: {
-                        auth: {
-                            update: {
-                                refreshToken: newRefreshToken.token,
-                                tokenExpiry: newRefreshToken.exp,
+                    res?.setHeader('set-cookie', [
+                        `refreshToken=${newRefreshToken};Max-Age=${REFRESH_TOKEN_EXPIRES};${setCookieHeaderOptions}`,
+                    ]);
+
+                    await prisma.user.update({
+                        where: { id: userId },
+                        data: {
+                            auth: {
+                                update: {
+                                    refreshToken: newRefreshToken,
+                                    tokenExpiry: refreshTokenDecode.exp.toString(),
+                                },
                             },
                         },
-                    },
-                });
+                    });
 
-                return { token, user: foundUser };
+                    return { token, user: foundUser };
+                } catch (error) {
+                    throw new Error('Invalid refresh token');
+                }
             },
         });
 

@@ -5,17 +5,16 @@ import { onError } from '@apollo/client/link/error';
 import { message as antMessage } from 'antd';
 import { isBrowser } from 'utils/isBrowser';
 import { setContext } from '@apollo/client/link/context';
+import { TokenRefreshLink } from 'apollo-link-token-refresh';
+import { verify } from 'jsonwebtoken';
+import { getAccessToken, setAccessToken } from 'utils/accessToken';
+import { ACCESS_TOKEN_SECRET, BASE_URL } from 'utils/config';
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
 export type ResolverContext = {
     req?: IncomingMessage;
     res?: ServerResponse;
-};
-
-let auth = {
-    token: undefined,
-    userId: undefined,
 };
 
 const linkError = onError(({ graphQLErrors, networkError }) => {
@@ -36,7 +35,7 @@ const link = createHttpLink({
 
 const authLink = setContext((_, { headers }) => {
     // get the authentication token from local storage if it exists
-    const { token } = auth;
+    const token = getAccessToken();
     // return the headers to the context so httpLink can read them
     return {
         headers: {
@@ -46,10 +45,59 @@ const authLink = setContext((_, { headers }) => {
     };
 });
 
+const refreshLink = new TokenRefreshLink({
+    accessTokenField: 'newToken',
+    // No need to refresh if token exists and is still valid
+    isTokenValidOrUndefined: () => {
+        const token = getAccessToken();
+
+        // No need to refresh if we don't have a userId
+        if (!token) {
+            return false;
+        }
+
+        // No need to refresh if token exists and is valid
+        try {
+            verify(token, ACCESS_TOKEN_SECRET);
+            return true;
+        } catch (error) {
+            return false;
+        }
+    },
+    fetchAccessToken: async () => {
+        // Use fetch to access the refreshUserToken mutation
+        const response = await fetch(`${BASE_URL}/api/graphql`, {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify({
+                query: `mutation {
+                    refreshToken {
+                      token
+                    }
+                  }`,
+            }),
+        });
+        return response.json();
+    },
+    handleFetch: (newToken: string) => {
+        // save new authentication token to state
+        setAccessToken(newToken);
+    },
+    handleResponse: (_operation, _accessTokenField) => (response: any) => {
+        if (!response) return { newToken: null };
+        return { newToken: response.data?.refreshToken.token };
+    },
+    handleError: (error) => {
+        console.error('Cannot refresh access token:', error);
+    },
+});
+
 function createApolloClient(_context?: ResolverContext, _initialState?: any) {
     return new ApolloClient({
         ssrMode: typeof window === 'undefined',
-        link: ApolloLink.from([linkError, authLink, link]),
+        link: ApolloLink.from([linkError, refreshLink, authLink, link]), // links have to on order like nodeJS middleware
         cache: new InMemoryCache(),
     });
 }
@@ -76,8 +124,7 @@ export function initializeApollo(
 }
 
 export function useApollo(initialState: any) {
-    console.log('🛎 initialState: => ', initialState);
-    auth = { ...initialState.auth };
+    // setAccessToken(initialState.auth);
     const store = useMemo(() => initializeApollo(initialState), [initialState]);
     return store;
 }

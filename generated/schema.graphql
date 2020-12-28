@@ -94,7 +94,7 @@ type Mutation {
   deleteOneUser(where: UserWhereUniqueInput!): User
   login(email: String!, password: String!): AuthPayload!
   logout(userId: String!): Boolean!
-  refreshToken(userId: String!): AuthPayload!
+  refreshToken: AuthPayload!
   updateManyUser(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   updateOneUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
 }
@@ -126,7 +126,7 @@ input NestedStringFilter {
 
 type Query {
   allUsers: [User]
-  user(where: UserWhereUniqueInput!): User
+  user: User!
   users(after: UserWhereUniqueInput, before: UserWhereUniqueInput, first: Int, last: Int): [User!]!
 }
 

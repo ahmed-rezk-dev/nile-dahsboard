@@ -45,13 +45,8 @@ export type AuthPayload = {
 export type Query = {
   __typename?: 'Query';
   allUsers?: Maybe<Array<Maybe<User>>>;
-  user?: Maybe<User>;
+  user: User;
   users: Array<User>;
-};
-
-
-export type QueryUserArgs = {
-  where: UserWhereUniqueInput;
 };
 
 
@@ -105,11 +100,6 @@ export type MutationUpdateManyUserArgs = {
 export type MutationLoginArgs = {
   email: Scalars['String'];
   password: Scalars['String'];
-};
-
-
-export type MutationRefreshTokenArgs = {
-  userId: Scalars['String'];
 };
 
 
@@ -326,6 +316,21 @@ export type LoginMutation = (
   ) }
 );
 
+export type UserQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UserQuery = (
+  { __typename?: 'Query' }
+  & { user: (
+    { __typename?: 'User' }
+    & { auth?: Maybe<(
+      { __typename?: 'Auth' }
+      & AuthFragmentFragment
+    )> }
+    & UserFragmentFragment
+  ) }
+);
+
 export type AllUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -397,6 +402,42 @@ export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginM
 export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
 export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
 export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
+export const UserDocument = gql`
+    query User {
+  user {
+    ...UserFragment
+    auth {
+      ...AuthFragment
+    }
+  }
+}
+    ${UserFragmentFragmentDoc}
+${AuthFragmentFragmentDoc}`;
+
+/**
+ * __useUserQuery__
+ *
+ * To run a query within a React component, call `useUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useUserQuery(baseOptions?: Apollo.QueryHookOptions<UserQuery, UserQueryVariables>) {
+        return Apollo.useQuery<UserQuery, UserQueryVariables>(UserDocument, baseOptions);
+      }
+export function useUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserQuery, UserQueryVariables>) {
+          return Apollo.useLazyQuery<UserQuery, UserQueryVariables>(UserDocument, baseOptions);
+        }
+export type UserQueryHookResult = ReturnType<typeof useUserQuery>;
+export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>;
+export type UserQueryResult = Apollo.QueryResult<UserQuery, UserQueryVariables>;
 export const AllUsersDocument = gql`
     query AllUsers {
   allUsers {

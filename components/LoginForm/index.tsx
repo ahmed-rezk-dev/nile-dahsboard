@@ -32,9 +32,11 @@ const LoginForm: React.FC<Props> = ({ changeFormHandler }) => {
         try {
             const { data } = await login({ variables: values });
             const payload = { token: data?.login.token, userId: data?.login.user?.id };
-            dispatch(setAuthAction(payload));
+            setTimeout(() => {
+                router.push('/');
+            }, 1000);
             useApollo({ auth: payload });
-            router.push('/');
+            dispatch(setAuthAction(payload));
         } catch (error) {}
     };
 

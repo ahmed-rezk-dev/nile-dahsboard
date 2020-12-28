@@ -25,6 +25,7 @@
         "@nexus/schema": "^0.20.1",
         "@prisma/client": "^2.13.0",
         "antd": "^4.8.5",
+        "apollo-link-token-refresh": "^0.3.2",
         "apollo-server-micro": "^2.19.0",
         "bcrypt": "^5.0.0",
         "graphql": "^15.4.0",

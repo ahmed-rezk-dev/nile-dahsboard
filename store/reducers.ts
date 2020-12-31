@@ -1,5 +1,5 @@
 import { AuthConstants, Constants } from './constants';
-import { SidebarType } from '@/components/Sidebar/sidebar.type';
+import { SidebarType } from 'components/Sidebar/sidebar.type';
 import { ActionsType } from './actions';
 import { AuthType } from 'interfaces';
 

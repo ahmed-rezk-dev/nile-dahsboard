@@ -6,7 +6,7 @@
         "build": "yarn codegen && next build",
         "test": "yarn codegen && jest",
         "start": "next start",
-        "test:watch": "npm run test -- --watch",
+        "test:watch": "yarn jest -- --watch",
         "type-check": "tsc",
         "codegen": "npx graphql-codegen --watch",
         "generate": "npm -s run generate:prisma && npm -s run generate:nexus",

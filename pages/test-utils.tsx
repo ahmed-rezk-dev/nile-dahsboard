@@ -1,7 +1,19 @@
-import {ThemeProvider} from 'styled-components';
-import {render} from '@testing-library/react';
+import { ThemeProvider } from 'styled-components';
+import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import 'mutationobserver-shim';
+// import theme, { GlobalStyle } from './theme';
+// import Layout from 'components/Layout';
+// import { MockedProvider, MockedResponse } from '@apollo/client/testing';
+
+// type RenderApolloOptions = {
+//     mocks?: MockedResponse[];
+//     addTypename?: any;
+//     defaultOptions?: any;
+//     cache?: any;
+//     resolvers?: any;
+//     [st: string]: any;
+// };
 
 const theme = {
     colors: {
@@ -9,15 +21,33 @@ const theme = {
     },
 };
 
-const AntRenderer = ({children}: any) => {
-    return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
-};
+const AllRenderers = ({ children }: any) =>
+    // { mocks, addTypename, defaultOptions, cache, resolvers }: RenderApolloOptions = {}
+    {
+        // return (
+        //     <>
+        //         <GlobalStyle />
+        //         <ThemeProvider theme={theme}>
+        //             {/* <MockedProvider
+        //             mocks={mocks}
+        //             addTypename={addTypename}
+        //             defaultOptions={defaultOptions}
+        //             cache={cache}
+        //             resolvers={resolvers}
+        //         > */}
+        //             {children}
+        //             {/* </MockedProvider> */}
+        //         </ThemeProvider>
+        //     </>
+        // );
+        return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
+    };
 
 const customRender = (ui: any, options?: any) =>
     render(ui, {
-        wrapper: AntRenderer,
+        wrapper: AllRenderers,
         ...options,
     });
 
 export * from '@testing-library/react';
-export {customRender as render};
+export { customRender as render };

@@ -1,6 +1,13 @@
 import { IncomingMessage, ServerResponse } from 'http';
 import { useMemo } from 'react';
-import { ApolloClient, ApolloLink, createHttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
+import {
+    ApolloClient,
+    ApolloLink,
+    createHttpLink,
+    HttpLink,
+    InMemoryCache,
+    NormalizedCacheObject,
+} from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 import { message as antMessage } from 'antd';
 import { isBrowser } from 'utils/isBrowser';
@@ -9,6 +16,7 @@ import { TokenRefreshLink } from 'apollo-link-token-refresh';
 import { verify } from 'jsonwebtoken';
 import { getAccessToken, setAccessToken } from 'utils/accessToken';
 import { ACCESS_TOKEN_SECRET, BASE_URL } from 'utils/config';
+import fetch from 'node-fetch';
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
@@ -28,9 +36,10 @@ const linkError = onError(({ graphQLErrors, networkError }) => {
     if (networkError) console.log(`[Network error]: ${networkError}`);
 });
 
-const link = createHttpLink({
+const link = new HttpLink({
     uri: 'api/graphql',
     credentials: 'include',
+    fetch,
 });
 
 const authLink = setContext((_, { headers }) => {

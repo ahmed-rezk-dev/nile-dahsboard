@@ -3,7 +3,7 @@ import { ThemeProvider } from 'styled-components';
 import 'antd/dist/antd.css';
 import theme, { GlobalStyle } from './theme';
 import { AppContext, AppProvider } from 'store/context';
-import Layout from '@/components/Layout';
+import Layout from 'components/Layout';
 import { useApollo } from 'graphql/apollo';
 import { ApolloProvider } from '@apollo/client';
 import { useContext } from 'react';

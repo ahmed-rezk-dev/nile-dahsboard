@@ -2,8 +2,8 @@ import React, { ReactNode } from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
 import { Layout as AntLayout } from 'antd';
-import Sidebar from '@/components/Sidebar';
-import Navbar from '@/components/Navbar';
+import Sidebar from 'components/Sidebar';
+import Navbar from 'components/Navbar';
 import FooterComponent from './Footer';
 const { Content } = AntLayout;
 

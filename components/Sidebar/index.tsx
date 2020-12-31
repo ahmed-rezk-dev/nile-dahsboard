@@ -29,7 +29,7 @@ import {
     SubMenuContainer,
     SubMenuTitle,
     SubMenuItem,
-} from '@/components/Styled/Sidebar';
+} from 'components/Styled/Sidebar';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { BaseRouter } from 'next/dist/next-server/lib/router/router';

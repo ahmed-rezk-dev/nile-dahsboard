@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import LoginLayout from '@/components/LoginLayout';
+import LoginLayout from 'components/LoginLayout';
 import { animated, useTransition } from 'react-spring';
-import LoginForm from '@/components/LoginForm';
+import LoginForm from 'components/LoginForm';
 
 import {
     MainContainer,
@@ -12,11 +12,11 @@ import {
     Separator,
     Text,
     Title,
-} from '@/components/Styled/Login';
+} from 'components/Styled/Login';
 import { Button } from 'antd';
 import { LinkedinOutlined, MailOutlined } from '@ant-design/icons';
-import ForgetPasswordUsingEmail from '@/components/ForgetPasswordUsingEmail';
-import ResetForm from '@/components/ForgetPasswordUsingEmail/ResetForm';
+import ForgetPasswordUsingEmail from 'components/ForgetPasswordUsingEmail';
+import ResetForm from 'components/ForgetPasswordUsingEmail/ResetForm';
 
 type Props = React.FC & {
     Layout?: typeof LoginLayout;

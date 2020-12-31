@@ -7,7 +7,7 @@
 import React from 'react';
 import { Breadcrumb } from 'antd';
 import * as Icons from '@ant-design/icons';
-import { BreadcrumbContainer } from '@/components/Styled/Navbar';
+import { BreadcrumbContainer } from 'components/Styled/Navbar';
 import routesList, { RouteList } from 'utils/routesList';
 import { BaseRouter } from 'next/dist/next-server/lib/router/router';
 

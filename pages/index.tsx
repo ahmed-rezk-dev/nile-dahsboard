@@ -1,11 +1,10 @@
-import Metric from '@/components/Metric';
+import Metric from 'components/Metric';
 import { Row } from 'antd';
 import { useUserQuery } from 'generated/graphql';
 import { MessagesSvg, MoneyBagSvg, OrdersSvg, UsersSvg } from 'utils/svg';
 
 const IndexPage = () => {
     const { data } = useUserQuery();
-    console.log('user', data);
     return (
         <>
             {/* Metric Cards */}
@@ -15,6 +14,10 @@ const IndexPage = () => {
                 <Metric color="#1890ff" icon={OrdersSvg} title="Orders Total" count="20,000"></Metric>
                 <Metric color="#613cea" icon={MoneyBagSvg} title="Money Total" count="60,000"></Metric>
             </Row>
+
+            <h4>
+                {data?.user.firstname} {data?.user.lastname}
+            </h4>
         </>
     );
 };

@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 import { useLoginMutation } from 'generated/graphql';
 import { AppContext } from 'store/context';
 import { setAuthAction } from 'store/actions';
-import { useApollo } from 'graphql/apollo';
+import { useApollo } from '@graphql/apollo';
 
 interface Props {
     changeFormHandler: Function;

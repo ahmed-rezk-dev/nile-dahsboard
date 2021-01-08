@@ -11,8 +11,14 @@ module.exports = {
     moduleNameMapper: {
         '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
         '\\.(gif|ttf|eot|svg|png)$': '<rootDir>/test/__mocks__/fileMock.js',
-        '^@styled(.*)$': '<rootDir>/components/styled$1',
+        '^@styled(.*)$': '<rootDir>//components/styled$1',
+        '^components(.*)$': '<rootDir>//components$1',
+        '^generated(.*)$': '<rootDir>//generated$1',
+        '^store(.*)$': '<rootDir>//store$1',
+        '^@graphql(.*)$': '<rootDir>//graphql$1',
+        '^utils(.*)$': '<rootDir>//utils$1',
+        // '^@/(.*)$': '<rootDir>/$1',
     },
-    moduleDirectories: ['node_modules', '.'],
+    // moduleDirectories: ['.', 'node_modules'],
     collectCoverage: true,
 };

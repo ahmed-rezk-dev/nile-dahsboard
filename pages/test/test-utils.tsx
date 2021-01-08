@@ -1,8 +1,10 @@
 import { ThemeProvider } from 'styled-components';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import '@testing-library/jest-dom/extend-expect';
 import 'mutationobserver-shim';
-// import theme, { GlobalStyle } from './theme';
+import theme from '../theme';
+import './matchMedia.mock';
 // import Layout from 'components/Layout';
 // import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 
@@ -15,11 +17,11 @@ import 'mutationobserver-shim';
 //     [st: string]: any;
 // };
 
-const theme = {
-    colors: {
-        primary: '#0070f3',
-    },
-};
+// const theme = {
+//     colors: {
+//         primary: '#0070f3',
+//     },
+// };
 
 const AllRenderers = ({ children }: any) =>
     // { mocks, addTypename, defaultOptions, cache, resolvers }: RenderApolloOptions = {}

@@ -23,6 +23,8 @@ const ForgetPasswordUsingEmail: React.FC<Props> = ({ changeFormHandler }) => {
         changeFormHandler('#resetForm');
     };
 
+    console.log('render');
+
     return (
         <FormCard>
             {/* Start => card header */}

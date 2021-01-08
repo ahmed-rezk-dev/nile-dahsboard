@@ -288,14 +288,14 @@ export type AuthUpsertWithoutUserInput = {
   create: AuthCreateWithoutUserInput;
 };
 
-export type AuthFragmentFragment = (
-  { __typename?: 'Auth' }
-  & Pick<Auth, 'id' | 'refreshToken' | 'tokenExpiry' | 'userId'>
-);
-
 export type UserFragmentFragment = (
   { __typename?: 'User' }
   & Pick<User, 'id' | 'firstname' | 'lastname' | 'email' | 'password' | 'phone' | 'createdAt' | 'updatedAt'>
+);
+
+export type AuthFragmentFragment = (
+  { __typename?: 'Auth' }
+  & Pick<Auth, 'id' | 'refreshToken' | 'tokenExpiry' | 'userId'>
 );
 
 export type LoginMutationVariables = Exact<{
@@ -346,14 +346,6 @@ export type AllUsersQuery = (
   )>>> }
 );
 
-export const AuthFragmentFragmentDoc = gql`
-    fragment AuthFragment on Auth {
-  id
-  refreshToken
-  tokenExpiry
-  userId
-}
-    `;
 export const UserFragmentFragmentDoc = gql`
     fragment UserFragment on User {
   id
@@ -364,6 +356,14 @@ export const UserFragmentFragmentDoc = gql`
   phone
   createdAt
   updatedAt
+}
+    `;
+export const AuthFragmentFragmentDoc = gql`
+    fragment AuthFragment on Auth {
+  id
+  refreshToken
+  tokenExpiry
+  userId
 }
     `;
 export const LoginDocument = gql`

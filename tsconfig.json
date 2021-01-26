@@ -17,6 +17,7 @@
         "skipLibCheck": true,
         "strict": true,
         "target": "esnext",
+        "types": ["cypress"],
         "baseUrl": ".",
         "plugins": [{ "name": "nexus/typescript-language-service" }], // To improve the development experience with nexus
         "paths": {

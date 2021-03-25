@@ -72,7 +72,7 @@ const LoginForm: React.FC<Props> = ({ changeFormHandler }) => {
                 </Form.Item>
                 <Form.Item>
                     <Row justify="center">
-                        <LoginFormButton type="primary" htmlType="submit" size="large" loading={loading}>
+                        <LoginFormButton type="primary" htmlType="submit" size="large" data-test-id="login-button" loading={loading} disabled={loading} >
                             Login
                         </LoginFormButton>
                     </Row>

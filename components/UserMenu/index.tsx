@@ -4,9 +4,9 @@ import { MenuOutlined, UserOutlined, SettingOutlined, BulbOutlined, LogoutOutlin
 import { DropdownContainer, DropMenuItem } from '@styled/DropdownMenu';
 import Link from 'next/link';
 
-interface Props {}
+// interface Props {}
 
-const UserMenu = (props: Props) => {
+const UserMenu = (/* props: Props */) => {
     const userMenu = (
         <Menu>
             <DropMenuItem>

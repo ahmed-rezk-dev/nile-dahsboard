@@ -12,7 +12,7 @@ import { DropdownContainer } from '../Styled/DropdownMenu';
 import Link from 'next/link';
 import styled from 'styled-components';
 
-interface Props {}
+// interface Props {}
 
 const data = [
     {
@@ -100,7 +100,7 @@ const NotifHeader = styled.div`
     text-align: center;
 `;
 
-const NotificationsMenu = (props: Props) => {
+const NotificationsMenu = (/* props: Props */) => {
     const menu = (
         <MenuContainer>
             <List

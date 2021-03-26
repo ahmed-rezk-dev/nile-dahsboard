@@ -28,10 +28,20 @@ const MetricLeft = styled(Col)`
 const MetricRight = styled(Col)`
     padding: 0.1rem 1rem;
 `;
-const MetricIcon = styled(Icon)`
-    align-self: center;
-    width: 4rem;
-`;
+
+type WrapperProps = {
+    component?: React.ElementType | keyof JSX.IntrinsicElements
+}
+const MetricIcon = styled(Icon).attrs((props: WrapperProps) => {
+    return {
+        component: props.component,  // <-- add this line
+      style: {
+            'align-self': 'center',
+            'width': '4rem'
+      },
+    };
+  })``;
+
 const MetricCount = styled.strong`
     display: block;
     margin: 1rem 0;

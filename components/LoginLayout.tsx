@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import Head from 'next/head';
-import { Layout as AntLayout } from 'antd';
-const { Content } = AntLayout;
+// import { Layout as AntLayout } from 'antd';
+// const { Content } = AntLayout;
 
 type Props = {
     children?: ReactNode;

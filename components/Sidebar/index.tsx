@@ -110,7 +110,7 @@ const Sidebar = () => {
                 }}
                 to={{
                     left: '0px',
-                    minWidth: toggle ? 'auto' : '200px',
+                    minWidth: toggle ? '0' : '200px',
                 }}
             >
                 {({ left, minWidth }) => (

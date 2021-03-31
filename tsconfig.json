@@ -15,7 +15,7 @@
         "noUnusedParameters": true,
         "resolveJsonModule": true,
         "skipLibCheck": true,
-        "strict": true,
+        "strict": false,
         "target": "esnext",
         "types": ["cypress"],
         "typeRoots": ["./support"],
@@ -26,7 +26,7 @@
             "@actions/*": ["store/actions/*"],
             "@styled/*": ["components/Styled/*"],
             "@graphql/*": ["graphql/*"]
-        }
+        },
     },
     "exclude": ["node_modules", "**/*.spec.ts", "**/*.spec.tsx", "**/*.test.ts", "**/*.test.tsx", "cypress"],
     "include": ["**/*.ts", "**/*.tsx", "cypress/*/*.ts", "node_modules/cypress"]

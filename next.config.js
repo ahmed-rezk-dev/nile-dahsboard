@@ -18,6 +18,12 @@ module.exports = {
             use: 'yaml-loader',
         });
 
+        if (!options.isServer) {
+            config.node = {
+                fs: 'empty'
+            }
+        }
+
         return config;
     },
 };

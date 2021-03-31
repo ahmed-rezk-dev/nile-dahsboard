@@ -3,7 +3,6 @@ import { useMemo } from 'react';
 import {
     ApolloClient,
     ApolloLink,
-    createHttpLink,
     HttpLink,
     InMemoryCache,
     NormalizedCacheObject,
@@ -39,7 +38,7 @@ const linkError = onError(({ graphQLErrors, networkError }) => {
 const link = new HttpLink({
     uri: 'api/graphql',
     credentials: 'include',
-    fetch,
+    // fetch,
 });
 
 const authLink = setContext((_, { headers }) => {

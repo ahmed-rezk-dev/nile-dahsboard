@@ -2,20 +2,24 @@
 ### Do not make changes to this file directly
 
 
-type Auth {
-  id: String!
-  refreshToken: String!
-  tokenExpiry: String!
-  userId: String!
+type AffectedRowsOutput {
+  count: Int
 }
 
-input AuthCreateOneWithoutUserInput {
+type Auth {
+  id: String
+  refreshToken: String
+  tokenExpiry: String
+  userId: String
+}
+
+input AuthCreateNestedOneWithoutUserInput {
   connect: AuthWhereUniqueInput
-  connectOrCreate: AuthCreateOrConnectWithoutuserInput
+  connectOrCreate: AuthCreateOrConnectWithoutUserInput
   create: AuthCreateWithoutUserInput
 }
 
-input AuthCreateOrConnectWithoutuserInput {
+input AuthCreateOrConnectWithoutUserInput {
   create: AuthCreateWithoutUserInput!
   where: AuthWhereUniqueInput!
 }
@@ -33,7 +37,7 @@ type AuthPayload {
 
 input AuthUpdateOneWithoutUserInput {
   connect: AuthWhereUniqueInput
-  connectOrCreate: AuthCreateOrConnectWithoutuserInput
+  connectOrCreate: AuthCreateOrConnectWithoutUserInput
   create: AuthCreateWithoutUserInput
   delete: Boolean
   disconnect: Boolean
@@ -54,9 +58,9 @@ input AuthUpsertWithoutUserInput {
 
 input AuthWhereInput {
   AND: [AuthWhereInput!]
-  id: StringFilter
   NOT: [AuthWhereInput!]
   OR: [AuthWhereInput!]
+  id: StringFilter
   refreshToken: StringFilter
   tokenExpiry: StringFilter
   user: UserWhereInput
@@ -65,10 +69,6 @@ input AuthWhereInput {
 
 input AuthWhereUniqueInput {
   id: String
-}
-
-type BatchPayload {
-  count: Int!
 }
 
 scalar DateTime
@@ -89,13 +89,13 @@ input DateTimeFilter {
 }
 
 type Mutation {
-  createOneUser(data: UserCreateInput!): User!
-  deleteManyUser(where: UserWhereInput): BatchPayload!
+  createOneUser(data: UserCreateInput!): User
+  deleteManyUser(where: UserWhereInput): AffectedRowsOutput
   deleteOneUser(where: UserWhereUniqueInput!): User
   login(email: String!, password: String!): AuthPayload!
   logout(userId: String!): Boolean!
   refreshToken: AuthPayload!
-  updateManyUser(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
+  updateManyUser(data: UserUpdateManyMutationInput!, where: UserWhereInput): AffectedRowsOutput
   updateOneUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
 }
 
@@ -156,19 +156,19 @@ input StringFilter {
 
 type User {
   auth: Auth
-  createdAt: DateTime!
-  email: String!
-  firstname: String!
-  id: String!
-  lastname: String!
-  password: String!
-  phone: String!
-  role: String!
-  updatedAt: DateTime!
+  createdAt: DateTime
+  email: String
+  firstname: String
+  id: String
+  lastname: String
+  password: String
+  phone: String
+  role: String
+  updatedAt: DateTime
 }
 
 input UserCreateInput {
-  auth: AuthCreateOneWithoutUserInput
+  auth: AuthCreateNestedOneWithoutUserInput
   createdAt: DateTime
   email: String!
   firstname: String!
@@ -207,14 +207,14 @@ input UserUpdateManyMutationInput {
 
 input UserWhereInput {
   AND: [UserWhereInput!]
+  NOT: [UserWhereInput!]
+  OR: [UserWhereInput!]
   auth: AuthWhereInput
   createdAt: DateTimeFilter
   email: StringFilter
   firstname: StringFilter
   id: StringFilter
   lastname: StringFilter
-  NOT: [UserWhereInput!]
-  OR: [UserWhereInput!]
   password: StringFilter
   phone: StringFilter
   role: StringFilter

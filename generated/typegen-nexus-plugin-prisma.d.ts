@@ -3,7 +3,7 @@
  * Do not make changes to this file directly
  */
 
-import * as Context from "./../graphql/context"
+
 
 
 
@@ -19,12 +19,12 @@ declare global {
 }
 
 export interface NexusGenInputs {
-  AuthCreateOneWithoutUserInput: { // input type
+  AuthCreateNestedOneWithoutUserInput: { // input type
     connect?: NexusGenInputs['AuthWhereUniqueInput'] | null; // AuthWhereUniqueInput
-    connectOrCreate?: NexusGenInputs['AuthCreateOrConnectWithoutuserInput'] | null; // AuthCreateOrConnectWithoutuserInput
+    connectOrCreate?: NexusGenInputs['AuthCreateOrConnectWithoutUserInput'] | null; // AuthCreateOrConnectWithoutUserInput
     create?: NexusGenInputs['AuthCreateWithoutUserInput'] | null; // AuthCreateWithoutUserInput
   }
-  AuthCreateOrConnectWithoutuserInput: { // input type
+  AuthCreateOrConnectWithoutUserInput: { // input type
     create: NexusGenInputs['AuthCreateWithoutUserInput']; // AuthCreateWithoutUserInput!
     where: NexusGenInputs['AuthWhereUniqueInput']; // AuthWhereUniqueInput!
   }
@@ -35,7 +35,7 @@ export interface NexusGenInputs {
   }
   AuthUpdateOneWithoutUserInput: { // input type
     connect?: NexusGenInputs['AuthWhereUniqueInput'] | null; // AuthWhereUniqueInput
-    connectOrCreate?: NexusGenInputs['AuthCreateOrConnectWithoutuserInput'] | null; // AuthCreateOrConnectWithoutuserInput
+    connectOrCreate?: NexusGenInputs['AuthCreateOrConnectWithoutUserInput'] | null; // AuthCreateOrConnectWithoutUserInput
     create?: NexusGenInputs['AuthCreateWithoutUserInput'] | null; // AuthCreateWithoutUserInput
     delete?: boolean | null; // Boolean
     disconnect?: boolean | null; // Boolean
@@ -53,9 +53,9 @@ export interface NexusGenInputs {
   }
   AuthWhereInput: { // input type
     AND?: NexusGenInputs['AuthWhereInput'][] | null; // [AuthWhereInput!]
-    id?: NexusGenInputs['StringFilter'] | null; // StringFilter
     NOT?: NexusGenInputs['AuthWhereInput'][] | null; // [AuthWhereInput!]
     OR?: NexusGenInputs['AuthWhereInput'][] | null; // [AuthWhereInput!]
+    id?: NexusGenInputs['StringFilter'] | null; // StringFilter
     refreshToken?: NexusGenInputs['StringFilter'] | null; // StringFilter
     tokenExpiry?: NexusGenInputs['StringFilter'] | null; // StringFilter
     user?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
@@ -118,7 +118,7 @@ export interface NexusGenInputs {
     startsWith?: string | null; // String
   }
   UserCreateInput: { // input type
-    auth?: NexusGenInputs['AuthCreateOneWithoutUserInput'] | null; // AuthCreateOneWithoutUserInput
+    auth?: NexusGenInputs['AuthCreateNestedOneWithoutUserInput'] | null; // AuthCreateNestedOneWithoutUserInput
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     email: string; // String!
     firstname: string; // String!
@@ -154,14 +154,14 @@ export interface NexusGenInputs {
   }
   UserWhereInput: { // input type
     AND?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
+    NOT?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
+    OR?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
     auth?: NexusGenInputs['AuthWhereInput'] | null; // AuthWhereInput
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     email?: NexusGenInputs['StringFilter'] | null; // StringFilter
     firstname?: NexusGenInputs['StringFilter'] | null; // StringFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
     lastname?: NexusGenInputs['StringFilter'] | null; // StringFilter
-    NOT?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
-    OR?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
     password?: NexusGenInputs['StringFilter'] | null; // StringFilter
     phone?: NexusGenInputs['StringFilter'] | null; // StringFilter
     role?: NexusGenInputs['StringFilter'] | null; // StringFilter
@@ -186,31 +186,31 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  AffectedRowsOutput: { // root type
+    count?: number | null; // Int
+  }
   Auth: { // root type
-    id: string; // String!
-    refreshToken: string; // String!
-    tokenExpiry: string; // String!
-    userId: string; // String!
+    id?: string | null; // String
+    refreshToken?: string | null; // String
+    tokenExpiry?: string | null; // String
+    userId?: string | null; // String
   }
   AuthPayload: { // root type
     token: string; // String!
     user?: NexusGenRootTypes['User'] | null; // User
   }
-  BatchPayload: { // root type
-    count: number; // Int!
-  }
   Mutation: {};
   Query: {};
   User: { // root type
-    createdAt: NexusGenScalars['DateTime']; // DateTime!
-    email: string; // String!
-    firstname: string; // String!
-    id: string; // String!
-    lastname: string; // String!
-    password: string; // String!
-    phone: string; // String!
-    role: string; // String!
-    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    email?: string | null; // String
+    firstname?: string | null; // String
+    id?: string | null; // String
+    lastname?: string | null; // String
+    password?: string | null; // String
+    phone?: string | null; // String
+    role?: string | null; // String
+    updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
   }
 }
 
@@ -225,27 +225,27 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
+  AffectedRowsOutput: { // field return type
+    count: number | null; // Int
+  }
   Auth: { // field return type
-    id: string; // String!
-    refreshToken: string; // String!
-    tokenExpiry: string; // String!
-    userId: string; // String!
+    id: string | null; // String
+    refreshToken: string | null; // String
+    tokenExpiry: string | null; // String
+    userId: string | null; // String
   }
   AuthPayload: { // field return type
     token: string; // String!
     user: NexusGenRootTypes['User'] | null; // User
   }
-  BatchPayload: { // field return type
-    count: number; // Int!
-  }
   Mutation: { // field return type
-    createOneUser: NexusGenRootTypes['User']; // User!
-    deleteManyUser: NexusGenRootTypes['BatchPayload']; // BatchPayload!
+    createOneUser: NexusGenRootTypes['User'] | null; // User
+    deleteManyUser: NexusGenRootTypes['AffectedRowsOutput'] | null; // AffectedRowsOutput
     deleteOneUser: NexusGenRootTypes['User'] | null; // User
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     logout: boolean; // Boolean!
     refreshToken: NexusGenRootTypes['AuthPayload']; // AuthPayload!
-    updateManyUser: NexusGenRootTypes['BatchPayload']; // BatchPayload!
+    updateManyUser: NexusGenRootTypes['AffectedRowsOutput'] | null; // AffectedRowsOutput
     updateOneUser: NexusGenRootTypes['User'] | null; // User
   }
   Query: { // field return type
@@ -255,19 +255,22 @@ export interface NexusGenFieldTypes {
   }
   User: { // field return type
     auth: NexusGenRootTypes['Auth'] | null; // Auth
-    createdAt: NexusGenScalars['DateTime']; // DateTime!
-    email: string; // String!
-    firstname: string; // String!
-    id: string; // String!
-    lastname: string; // String!
-    password: string; // String!
-    phone: string; // String!
-    role: string; // String!
-    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    createdAt: NexusGenScalars['DateTime'] | null; // DateTime
+    email: string | null; // String
+    firstname: string | null; // String
+    id: string | null; // String
+    lastname: string | null; // String
+    password: string | null; // String
+    phone: string | null; // String
+    role: string | null; // String
+    updatedAt: NexusGenScalars['DateTime'] | null; // DateTime
   }
 }
 
 export interface NexusGenFieldTypeNames {
+  AffectedRowsOutput: { // field return type name
+    count: 'Int'
+  }
   Auth: { // field return type name
     id: 'String'
     refreshToken: 'String'
@@ -278,17 +281,14 @@ export interface NexusGenFieldTypeNames {
     token: 'String'
     user: 'User'
   }
-  BatchPayload: { // field return type name
-    count: 'Int'
-  }
   Mutation: { // field return type name
     createOneUser: 'User'
-    deleteManyUser: 'BatchPayload'
+    deleteManyUser: 'AffectedRowsOutput'
     deleteOneUser: 'User'
     login: 'AuthPayload'
     logout: 'Boolean'
     refreshToken: 'AuthPayload'
-    updateManyUser: 'BatchPayload'
+    updateManyUser: 'AffectedRowsOutput'
     updateOneUser: 'User'
   }
   Query: { // field return type name
@@ -378,9 +378,10 @@ export type NexusGenFeaturesConfig = {
 }
 
 export interface NexusGenTypes {
-  context: Context.Context;
+  context: any;
   inputTypes: NexusGenInputs;
   rootTypes: NexusGenRootTypes;
+  inputTypeShapes: NexusGenInputs & NexusGenEnums & NexusGenScalars;
   argTypes: NexusGenArgTypes;
   fieldTypes: NexusGenFieldTypes;
   fieldTypeNames: NexusGenFieldTypeNames;
@@ -407,71 +408,11 @@ declare global {
   interface NexusGenPluginTypeConfig<TypeName extends string> {
   }
   interface NexusGenPluginFieldConfig<TypeName extends string, FieldName extends string> {
-    /**
-     * Whether the type can be null
-     * @default (depends on whether nullability is configured in type or schema)
-     * @see declarativeWrappingPlugin
-     */
-    nullable?: boolean
-    /**
-     * Whether the type is list of values, or just a single value.
-     * If list is true, we assume the type is a list. If list is an array,
-     * we'll assume that it's a list with the depth. The boolean indicates whether
-     * the type is required (non-null), where true = nonNull, false = nullable.
-     * @see declarativeWrappingPlugin
-     */
-    list?: true | boolean[]
-    /**
-     * Whether the type should be non null, `required: true` = `nullable: false`
-     * @default (depends on whether nullability is configured in type or schema)
-     * @see declarativeWrappingPlugin
-     */
-    required?: boolean
   }
   interface NexusGenPluginInputFieldConfig<TypeName extends string, FieldName extends string> {
-    /**
-     * Whether the type can be null
-     * @default (depends on whether nullability is configured in type or schema)
-     * @see declarativeWrappingPlugin
-     */
-    nullable?: boolean
-    /**
-     * Whether the type is list of values, or just a single value.
-     * If list is true, we assume the type is a list. If list is an array,
-     * we'll assume that it's a list with the depth. The boolean indicates whether
-     * the type is required (non-null), where true = nonNull, false = nullable.
-     * @see declarativeWrappingPlugin
-     */
-    list?: true | boolean[]
-    /**
-     * Whether the type should be non null, `required: true` = `nullable: false`
-     * @default (depends on whether nullability is configured in type or schema)
-     * @see declarativeWrappingPlugin
-     */
-    required?: boolean
   }
   interface NexusGenPluginSchemaConfig {
   }
   interface NexusGenPluginArgConfig {
-    /**
-     * Whether the type can be null
-     * @default (depends on whether nullability is configured in type or schema)
-     * @see declarativeWrappingPlugin
-     */
-    nullable?: boolean
-    /**
-     * Whether the type is list of values, or just a single value.
-     * If list is true, we assume the type is a list. If list is an array,
-     * we'll assume that it's a list with the depth. The boolean indicates whether
-     * the type is required (non-null), where true = nonNull, false = nullable.
-     * @see declarativeWrappingPlugin
-     */
-    list?: true | boolean[]
-    /**
-     * Whether the type should be non null, `required: true` = `nullable: false`
-     * @default (depends on whether nullability is configured in type or schema)
-     * @see declarativeWrappingPlugin
-     */
-    required?: boolean
   }
 }

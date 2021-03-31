@@ -4,6 +4,7 @@ export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+const defaultOptions =  {}
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -14,26 +15,34 @@ export type Scalars = {
   DateTime: any;
 };
 
-export type User = {
-  __typename?: 'User';
-  id: Scalars['String'];
-  email: Scalars['String'];
-  firstname: Scalars['String'];
-  lastname: Scalars['String'];
-  password: Scalars['String'];
-  phone: Scalars['String'];
-  role: Scalars['String'];
-  auth?: Maybe<Auth>;
-  createdAt: Scalars['DateTime'];
-  updatedAt: Scalars['DateTime'];
+export type AffectedRowsOutput = {
+  __typename?: 'AffectedRowsOutput';
+  count?: Maybe<Scalars['Int']>;
 };
 
 export type Auth = {
   __typename?: 'Auth';
-  id: Scalars['String'];
+  id?: Maybe<Scalars['String']>;
+  refreshToken?: Maybe<Scalars['String']>;
+  tokenExpiry?: Maybe<Scalars['String']>;
+  userId?: Maybe<Scalars['String']>;
+};
+
+export type AuthCreateNestedOneWithoutUserInput = {
+  create?: Maybe<AuthCreateWithoutUserInput>;
+  connectOrCreate?: Maybe<AuthCreateOrConnectWithoutUserInput>;
+  connect?: Maybe<AuthWhereUniqueInput>;
+};
+
+export type AuthCreateOrConnectWithoutUserInput = {
+  where: AuthWhereUniqueInput;
+  create: AuthCreateWithoutUserInput;
+};
+
+export type AuthCreateWithoutUserInput = {
+  id?: Maybe<Scalars['String']>;
   refreshToken: Scalars['String'];
   tokenExpiry: Scalars['String'];
-  userId: Scalars['String'];
 };
 
 export type AuthPayload = {
@@ -42,28 +51,65 @@ export type AuthPayload = {
   user?: Maybe<User>;
 };
 
-export type Query = {
-  __typename?: 'Query';
-  allUsers?: Maybe<Array<Maybe<User>>>;
-  user: User;
-  users: Array<User>;
+export type AuthUpdateOneWithoutUserInput = {
+  create?: Maybe<AuthCreateWithoutUserInput>;
+  connectOrCreate?: Maybe<AuthCreateOrConnectWithoutUserInput>;
+  upsert?: Maybe<AuthUpsertWithoutUserInput>;
+  connect?: Maybe<AuthWhereUniqueInput>;
+  disconnect?: Maybe<Scalars['Boolean']>;
+  delete?: Maybe<Scalars['Boolean']>;
+  update?: Maybe<AuthUpdateWithoutUserInput>;
+};
+
+export type AuthUpdateWithoutUserInput = {
+  id?: Maybe<StringFieldUpdateOperationsInput>;
+  refreshToken?: Maybe<StringFieldUpdateOperationsInput>;
+  tokenExpiry?: Maybe<StringFieldUpdateOperationsInput>;
+};
+
+export type AuthUpsertWithoutUserInput = {
+  update: AuthUpdateWithoutUserInput;
+  create: AuthCreateWithoutUserInput;
+};
+
+export type AuthWhereInput = {
+  AND?: Maybe<Array<AuthWhereInput>>;
+  OR?: Maybe<Array<AuthWhereInput>>;
+  NOT?: Maybe<Array<AuthWhereInput>>;
+  id?: Maybe<StringFilter>;
+  refreshToken?: Maybe<StringFilter>;
+  tokenExpiry?: Maybe<StringFilter>;
+  user?: Maybe<UserWhereInput>;
+  userId?: Maybe<StringFilter>;
+};
+
+export type AuthWhereUniqueInput = {
+  id?: Maybe<Scalars['String']>;
 };
 
 
-export type QueryUsersArgs = {
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  before?: Maybe<UserWhereUniqueInput>;
-  after?: Maybe<UserWhereUniqueInput>;
+export type DateTimeFieldUpdateOperationsInput = {
+  set?: Maybe<Scalars['DateTime']>;
+};
+
+export type DateTimeFilter = {
+  equals?: Maybe<Scalars['DateTime']>;
+  in?: Maybe<Array<Scalars['DateTime']>>;
+  notIn?: Maybe<Array<Scalars['DateTime']>>;
+  lt?: Maybe<Scalars['DateTime']>;
+  lte?: Maybe<Scalars['DateTime']>;
+  gt?: Maybe<Scalars['DateTime']>;
+  gte?: Maybe<Scalars['DateTime']>;
+  not?: Maybe<NestedDateTimeFilter>;
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createOneUser: User;
+  createOneUser?: Maybe<User>;
   deleteOneUser?: Maybe<User>;
-  deleteManyUser: BatchPayload;
+  deleteManyUser?: Maybe<AffectedRowsOutput>;
   updateOneUser?: Maybe<User>;
-  updateManyUser: BatchPayload;
+  updateManyUser?: Maybe<AffectedRowsOutput>;
   login: AuthPayload;
   refreshToken: AuthPayload;
   logout: Scalars['Boolean'];
@@ -107,9 +153,82 @@ export type MutationLogoutArgs = {
   userId: Scalars['String'];
 };
 
+export type NestedDateTimeFilter = {
+  equals?: Maybe<Scalars['DateTime']>;
+  in?: Maybe<Array<Scalars['DateTime']>>;
+  notIn?: Maybe<Array<Scalars['DateTime']>>;
+  lt?: Maybe<Scalars['DateTime']>;
+  lte?: Maybe<Scalars['DateTime']>;
+  gt?: Maybe<Scalars['DateTime']>;
+  gte?: Maybe<Scalars['DateTime']>;
+  not?: Maybe<NestedDateTimeFilter>;
+};
 
-export type UserWhereUniqueInput = {
+export type NestedStringFilter = {
+  equals?: Maybe<Scalars['String']>;
+  in?: Maybe<Array<Scalars['String']>>;
+  notIn?: Maybe<Array<Scalars['String']>>;
+  lt?: Maybe<Scalars['String']>;
+  lte?: Maybe<Scalars['String']>;
+  gt?: Maybe<Scalars['String']>;
+  gte?: Maybe<Scalars['String']>;
+  contains?: Maybe<Scalars['String']>;
+  startsWith?: Maybe<Scalars['String']>;
+  endsWith?: Maybe<Scalars['String']>;
+  not?: Maybe<NestedStringFilter>;
+};
+
+export type Query = {
+  __typename?: 'Query';
+  allUsers?: Maybe<Array<Maybe<User>>>;
+  user: User;
+  users: Array<User>;
+};
+
+
+export type QueryUsersArgs = {
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  before?: Maybe<UserWhereUniqueInput>;
+  after?: Maybe<UserWhereUniqueInput>;
+};
+
+export enum QueryMode {
+  Default = 'default',
+  Insensitive = 'insensitive'
+}
+
+export type StringFieldUpdateOperationsInput = {
+  set?: Maybe<Scalars['String']>;
+};
+
+export type StringFilter = {
+  equals?: Maybe<Scalars['String']>;
+  in?: Maybe<Array<Scalars['String']>>;
+  notIn?: Maybe<Array<Scalars['String']>>;
+  lt?: Maybe<Scalars['String']>;
+  lte?: Maybe<Scalars['String']>;
+  gt?: Maybe<Scalars['String']>;
+  gte?: Maybe<Scalars['String']>;
+  contains?: Maybe<Scalars['String']>;
+  startsWith?: Maybe<Scalars['String']>;
+  endsWith?: Maybe<Scalars['String']>;
+  mode?: Maybe<QueryMode>;
+  not?: Maybe<NestedStringFilter>;
+};
+
+export type User = {
+  __typename?: 'User';
   id?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  firstname?: Maybe<Scalars['String']>;
+  lastname?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
+  phone?: Maybe<Scalars['String']>;
+  role?: Maybe<Scalars['String']>;
+  auth?: Maybe<Auth>;
+  createdAt?: Maybe<Scalars['DateTime']>;
+  updatedAt?: Maybe<Scalars['DateTime']>;
 };
 
 export type UserCreateInput = {
@@ -122,28 +241,7 @@ export type UserCreateInput = {
   role?: Maybe<Scalars['String']>;
   createdAt?: Maybe<Scalars['DateTime']>;
   updatedAt?: Maybe<Scalars['DateTime']>;
-  auth?: Maybe<AuthCreateOneWithoutUserInput>;
-};
-
-export type BatchPayload = {
-  __typename?: 'BatchPayload';
-  count: Scalars['Int'];
-};
-
-export type UserWhereInput = {
-  AND?: Maybe<Array<UserWhereInput>>;
-  OR?: Maybe<Array<UserWhereInput>>;
-  NOT?: Maybe<Array<UserWhereInput>>;
-  id?: Maybe<StringFilter>;
-  firstname?: Maybe<StringFilter>;
-  lastname?: Maybe<StringFilter>;
-  email?: Maybe<StringFilter>;
-  phone?: Maybe<StringFilter>;
-  password?: Maybe<StringFilter>;
-  role?: Maybe<StringFilter>;
-  auth?: Maybe<AuthWhereInput>;
-  createdAt?: Maybe<DateTimeFilter>;
-  updatedAt?: Maybe<DateTimeFilter>;
+  auth?: Maybe<AuthCreateNestedOneWithoutUserInput>;
 };
 
 export type UserUpdateInput = {
@@ -171,121 +269,24 @@ export type UserUpdateManyMutationInput = {
   updatedAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
 };
 
-export type AuthCreateOneWithoutUserInput = {
-  create?: Maybe<AuthCreateWithoutUserInput>;
-  connect?: Maybe<AuthWhereUniqueInput>;
-  connectOrCreate?: Maybe<AuthCreateOrConnectWithoutuserInput>;
-};
-
-export type StringFilter = {
-  equals?: Maybe<Scalars['String']>;
-  in?: Maybe<Array<Scalars['String']>>;
-  notIn?: Maybe<Array<Scalars['String']>>;
-  lt?: Maybe<Scalars['String']>;
-  lte?: Maybe<Scalars['String']>;
-  gt?: Maybe<Scalars['String']>;
-  gte?: Maybe<Scalars['String']>;
-  contains?: Maybe<Scalars['String']>;
-  startsWith?: Maybe<Scalars['String']>;
-  endsWith?: Maybe<Scalars['String']>;
-  mode?: Maybe<QueryMode>;
-  not?: Maybe<NestedStringFilter>;
-};
-
-export type AuthWhereInput = {
-  AND?: Maybe<Array<AuthWhereInput>>;
-  OR?: Maybe<Array<AuthWhereInput>>;
-  NOT?: Maybe<Array<AuthWhereInput>>;
+export type UserWhereInput = {
+  AND?: Maybe<Array<UserWhereInput>>;
+  OR?: Maybe<Array<UserWhereInput>>;
+  NOT?: Maybe<Array<UserWhereInput>>;
   id?: Maybe<StringFilter>;
-  refreshToken?: Maybe<StringFilter>;
-  tokenExpiry?: Maybe<StringFilter>;
-  user?: Maybe<UserWhereInput>;
-  userId?: Maybe<StringFilter>;
+  firstname?: Maybe<StringFilter>;
+  lastname?: Maybe<StringFilter>;
+  email?: Maybe<StringFilter>;
+  phone?: Maybe<StringFilter>;
+  password?: Maybe<StringFilter>;
+  role?: Maybe<StringFilter>;
+  auth?: Maybe<AuthWhereInput>;
+  createdAt?: Maybe<DateTimeFilter>;
+  updatedAt?: Maybe<DateTimeFilter>;
 };
 
-export type DateTimeFilter = {
-  equals?: Maybe<Scalars['DateTime']>;
-  in?: Maybe<Array<Scalars['DateTime']>>;
-  notIn?: Maybe<Array<Scalars['DateTime']>>;
-  lt?: Maybe<Scalars['DateTime']>;
-  lte?: Maybe<Scalars['DateTime']>;
-  gt?: Maybe<Scalars['DateTime']>;
-  gte?: Maybe<Scalars['DateTime']>;
-  not?: Maybe<NestedDateTimeFilter>;
-};
-
-export type StringFieldUpdateOperationsInput = {
-  set?: Maybe<Scalars['String']>;
-};
-
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Maybe<Scalars['DateTime']>;
-};
-
-export type AuthUpdateOneWithoutUserInput = {
-  create?: Maybe<AuthCreateWithoutUserInput>;
-  connect?: Maybe<AuthWhereUniqueInput>;
-  disconnect?: Maybe<Scalars['Boolean']>;
-  delete?: Maybe<Scalars['Boolean']>;
-  update?: Maybe<AuthUpdateWithoutUserInput>;
-  upsert?: Maybe<AuthUpsertWithoutUserInput>;
-  connectOrCreate?: Maybe<AuthCreateOrConnectWithoutuserInput>;
-};
-
-export type AuthCreateWithoutUserInput = {
+export type UserWhereUniqueInput = {
   id?: Maybe<Scalars['String']>;
-  refreshToken: Scalars['String'];
-  tokenExpiry: Scalars['String'];
-};
-
-export type AuthWhereUniqueInput = {
-  id?: Maybe<Scalars['String']>;
-};
-
-export type AuthCreateOrConnectWithoutuserInput = {
-  where: AuthWhereUniqueInput;
-  create: AuthCreateWithoutUserInput;
-};
-
-export enum QueryMode {
-  Default = 'default',
-  Insensitive = 'insensitive'
-}
-
-export type NestedStringFilter = {
-  equals?: Maybe<Scalars['String']>;
-  in?: Maybe<Array<Scalars['String']>>;
-  notIn?: Maybe<Array<Scalars['String']>>;
-  lt?: Maybe<Scalars['String']>;
-  lte?: Maybe<Scalars['String']>;
-  gt?: Maybe<Scalars['String']>;
-  gte?: Maybe<Scalars['String']>;
-  contains?: Maybe<Scalars['String']>;
-  startsWith?: Maybe<Scalars['String']>;
-  endsWith?: Maybe<Scalars['String']>;
-  not?: Maybe<NestedStringFilter>;
-};
-
-export type NestedDateTimeFilter = {
-  equals?: Maybe<Scalars['DateTime']>;
-  in?: Maybe<Array<Scalars['DateTime']>>;
-  notIn?: Maybe<Array<Scalars['DateTime']>>;
-  lt?: Maybe<Scalars['DateTime']>;
-  lte?: Maybe<Scalars['DateTime']>;
-  gt?: Maybe<Scalars['DateTime']>;
-  gte?: Maybe<Scalars['DateTime']>;
-  not?: Maybe<NestedDateTimeFilter>;
-};
-
-export type AuthUpdateWithoutUserInput = {
-  id?: Maybe<StringFieldUpdateOperationsInput>;
-  refreshToken?: Maybe<StringFieldUpdateOperationsInput>;
-  tokenExpiry?: Maybe<StringFieldUpdateOperationsInput>;
-};
-
-export type AuthUpsertWithoutUserInput = {
-  update: AuthUpdateWithoutUserInput;
-  create: AuthCreateWithoutUserInput;
 };
 
 export type UserFragmentFragment = (
@@ -397,7 +398,8 @@ export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutati
  * });
  */
 export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
-        return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, options);
       }
 export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
 export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
@@ -430,10 +432,12 @@ ${AuthFragmentFragmentDoc}`;
  * });
  */
 export function useUserQuery(baseOptions?: Apollo.QueryHookOptions<UserQuery, UserQueryVariables>) {
-        return Apollo.useQuery<UserQuery, UserQueryVariables>(UserDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UserQuery, UserQueryVariables>(UserDocument, options);
       }
 export function useUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserQuery, UserQueryVariables>) {
-          return Apollo.useLazyQuery<UserQuery, UserQueryVariables>(UserDocument, baseOptions);
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UserQuery, UserQueryVariables>(UserDocument, options);
         }
 export type UserQueryHookResult = ReturnType<typeof useUserQuery>;
 export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>;
@@ -466,10 +470,12 @@ ${AuthFragmentFragmentDoc}`;
  * });
  */
 export function useAllUsersQuery(baseOptions?: Apollo.QueryHookOptions<AllUsersQuery, AllUsersQueryVariables>) {
-        return Apollo.useQuery<AllUsersQuery, AllUsersQueryVariables>(AllUsersDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AllUsersQuery, AllUsersQueryVariables>(AllUsersDocument, options);
       }
 export function useAllUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllUsersQuery, AllUsersQueryVariables>) {
-          return Apollo.useLazyQuery<AllUsersQuery, AllUsersQueryVariables>(AllUsersDocument, baseOptions);
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AllUsersQuery, AllUsersQueryVariables>(AllUsersDocument, options);
         }
 export type AllUsersQueryHookResult = ReturnType<typeof useAllUsersQuery>;
 export type AllUsersLazyQueryHookResult = ReturnType<typeof useAllUsersLazyQuery>;

@@ -1,4 +1,4 @@
-import { objectType, queryType, mutationType, makeSchema, stringArg, nonNull } from '@nexus/schema';
+import { objectType, queryType, mutationType, makeSchema, stringArg, nonNull } from 'nexus';
 import { nexusPrisma } from 'nexus-plugin-prisma';
 import path from 'path';
 import { compareSync } from 'bcrypt';
@@ -194,22 +194,24 @@ const Mutation = mutationType({
 
 export const schema = makeSchema({
     types: [User, Auth, AuthPayload, Query, Mutation],
+    shouldGenerateArtifacts : true,
     plugins: [nexusPrisma({ experimentalCRUD: true })],
     outputs: {
-        typegen: path.join(process.cwd(), 'generated', 'nexus-typegen.ts'),
+        typegen: path.join(process.cwd(), 'generated', 'typegen-nexus-plugin-prisma.d.ts'),
+        // typegen: path.join(process.cwd(), 'generated', 'nexus-typegen.ts'),
         schema: path.join(process.cwd(), 'generated', 'schema.graphql'),
     },
-    typegenAutoConfig: {
-        contextType: 'Context.Context',
-        sources: [
-            {
-                source: '@prisma/client',
-                alias: 'prisma',
-            },
-            {
-                source: path.join(process.cwd(), 'graphql', 'context.ts'),
-                alias: 'Context',
-            },
-        ],
-    },
+    // typegenAutoConfig: {
+    //     contextType: 'Context.Context',
+    //     sources: [
+    //         {
+    //             source: '@prisma/client',
+    //             alias: 'prisma',
+    //         },
+    //         {
+    //             source: path.join(process.cwd(), 'graphql', 'context.ts'),
+    //             alias: 'Context',
+    //         },
+    //     ],
+    // },
 });

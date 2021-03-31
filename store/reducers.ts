@@ -1,4 +1,4 @@
-import { AuthConstants, Constants } from './constants';
+import { Constants } from './constants';
 import { SidebarType } from 'components/Sidebar/sidebar.type';
 import { ActionsType } from './actions';
 import { AuthType } from 'interfaces';
@@ -59,6 +59,6 @@ export const authReducer = (state: AuthType, action: ActionsType): AuthType => {
 };
 
 // Checking types not included
-const exhaustiveCheck = (type: never | SidebarType | AuthType): never => {
-    throw new Error(`Missing type ${type}`);
-};
+// const exhaustiveCheck = (type: never | SidebarType | AuthType): never => {
+//     throw new Error(`Missing type ${type}`);
+// };

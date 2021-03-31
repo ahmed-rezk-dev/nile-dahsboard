@@ -49,7 +49,7 @@ const Login: Props = ({}) => {
 
     // Render forms
     const transitionForms = () =>
-        transition.map(({ item, props, key }) => {
+        transition.map(({props, key }) => {
             const loginForm = (
                 <animated.div key={key} style={props}>
                     <LoginForm changeFormHandler={changeFormHandler} />

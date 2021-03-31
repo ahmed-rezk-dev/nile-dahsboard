@@ -36,7 +36,7 @@ const MetricIcon = styled(Icon).attrs((props: WrapperProps) => {
     return {
         component: props.component,  // <-- add this line
       style: {
-            'align-self': 'center',
+            'alignSelf': 'center',
             'width': '4rem'
       },
     };

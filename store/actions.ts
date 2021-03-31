@@ -1,4 +1,4 @@
-import { AuthConstants, Constants } from './constants';
+import { Constants } from './constants';
 import { SidebarType } from 'components/Sidebar/sidebar.type';
 import { AuthType } from 'interfaces';
 

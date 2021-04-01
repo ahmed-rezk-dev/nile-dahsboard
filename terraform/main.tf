@@ -5,6 +5,14 @@ terraform {
       version = "~> 3.0"
     }
   }
+
+ backend "remote" {
+    organization = "dashboardJS"
+
+    workspaces {
+      name = "dashboards"
+    }
+  }
 }
 
 # Main region where the resources should be created in

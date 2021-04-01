@@ -32,3 +32,17 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# VScode
+.history/
+
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# Build output
+.next
+.next-tf
